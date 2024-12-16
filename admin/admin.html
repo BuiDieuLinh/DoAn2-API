@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="./css/admin.css">
+    <link rel="stylesheet" href="./image">
+    <link rel="icon" href="logo.png">
+    <script src="./js/jquery-3.7.1.js" type="text/javascript"></script>
+    <script src="./angular/angular.min.js"></script>
+    <script src="./js/admin.js" type="text/javascript"></script>
+    <script src="./angular/global.js"></script>
+    <script src="./angular/hoadon.js"></script>
+    <script src="./angular/nhacungcap.js"></script>
+    <script src="./angular/user.js"></script>
+    <script src="./angular/product.js"></script>
+    <script src="./angular/imports.js"></script>
+    <script src="./angular/news.js"></script>
+    <script src="./angular/price.js"></script>
+    <script src="./angular/report.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Đồ Án 2</title>
+</head>
+<body ng-app="PageAdmin">
+    <div id="wapper">
+        <div id="content">
+            <div id="content-left">
+                <div id="name-shop">
+                    <a class="name"><i class="fas fa-glasses"></i>LING GLASSES</a> 
+                </div> 
+                <div id="slide-bars">
+                    <div class="tab-bar">
+                        <div class="tab active" onclick="openTab(event, 'home')">
+                            <i class="fas fa-home icon"></i>
+                            Trang Chủ
+                            <i class="fas fa-angle-right"></i>
+                        </div>
+                        <div class="tab" onclick="openTab(event, 'products')">
+                            <i class="fas fa-glasses icon"></i>
+                            Sản Phẩm
+                            <i class="fas fa-angle-right"></i>
+                        </div>
+                        <div class="tab" onclick="openTab(event, 'news')">
+                            <i class="far fa-newspaper icon"></i>
+                            Bài Viết
+                            <i class="fas fa-angle-right"></i>
+                        </div>
+                        <div class="tab" onclick="openTab(event, 'price')">
+                            <i class="far fa-newspaper icon"></i>
+                            Khuyến mãi
+                            <i class="fas fa-angle-right"></i>
+                        </div>
+                        <div class="tab" onclick="openTab(event, 'customers')">
+                            <i class="far fa-user icon"></i>
+                            Khách Hàng
+                            <i class="fas fa-angle-right"></i>
+                        </div>
+                        
+                        <div class="tab" onclick="openTab(event, 'orders')">
+                            <i class="fas fa-file-invoice icon"></i>
+                            Đơn Hàng 
+                            <i class="fas fa-angle-right"></i>
+                        </div>
+                        <div class="tab" onclick="openTab(event, 'suppliers')">
+                            <i class="fas fa-truck icon"></i>
+                            Nhà Cung Cấp
+                            <i class="fas fa-angle-right"></i>
+                        </div>
+                        <div class="tab" onclick="openTab(event, 'imports')">
+                            <i class="fas fa-file-upload icon"></i>
+                            Đơn Hàng Nhập
+                            <i class="fas fa-angle-right"></i>
+                        </div>
+                        <div class="tab" onclick="openTab(event, 'reports')">
+                            <i class="fas fa-info-circle icon"></i>
+                            Thống Kê
+                            <i class="fas fa-angle-right"></i>
+                        </div>
+                        <div class="tab" onclick="openTab(event, 'settings')">
+                            <i class="fas fa-cog icon"></i>
+                            Cài Đặt
+                            <i class="fas fa-angle-right"></i>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div id="content-right">
+                <div id="header">
+                    <div id="header-container">
+                        <button id="btnpage-main" onclick="window.location.href = '../user/index.html'"><i class="fas fa-arrow-circle-left" style="padding: 10px;"></i>Vào trang web</button>
+                        <div>
+                            <ul id="alert-user">
+                                <li><i class="fas fa-bell"></i></li>
+                                <li id="adminLogin"><i class="fas fa-user-circle"></i>  Admin</li>
+                            </ul>
+                        </div>
+                    </div> 
+                </div>
+                <div class="tab-content">
+                    <!-- Content home -->
+                    <div id="home" class="content active" ng-controller="ReportCtrl">
+                        <div id="home-container">
+                            <div id="home-left">
+                                <section class="overview">
+                                    <div class="card">
+                                        <h3>Doanh Thu Hôm Nay</h3>
+                                        <p>{{reportToday.doanhThuHomNay | number: 0}}đ</p>
+                                    </div>
+                                    <div class="card">
+                                        <h3>Tổng Đơn Hàng</h3>
+                                        <p>{{reportToday.soLuongDonHangHomNay}}</p>
+                                    </div>
+                                    <div class="card">
+                                        <h3>Sản Phẩm Tồn Kho</h3>
+                                        <p>{{reportToday.soLuongSanPhamConLai}}</p>
+                                    </div>
+                                </section>
+                    
+                                <section class="notifications">
+                                    <h3>Thông Báo</h3>
+                                    <ul>
+                                        <li>Sản phẩm XYZ sắp hết hàng.</li>
+                                        <li>Đơn hàng #1234 đang chờ xử lý.</li>
+                                        <li>Có 5 khách hàng mới hôm nay.</li>
+                                    </ul>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content product -->
+                    <div id="products" class="content" ng-controller="ProductCtrl">
+                        <!-- Các điều khiển -->
+                        <div id="controller">
+                            <!-- Danh mục -->
+                            <div id="sortby">
+                                <button><i class="fas fa-sort-amount-up-alt"></i></button>
+                                <button><i class="fas fa-sort-amount-down"></i></button>
+                                <select name="glasses" id="category-glasses">
+                                    <option value="" disabled>--Danh Mục--</option>
+                                    <option ng-repeat="item in listCate" value="{{item.danhmuc_id}}" >{{item.tenDanhMuc}}</option>
+                                </select>
+                            </div>
+                            
+
+                            <!-- Tìm kiếm -->
+                            <div class="search-box">
+                                <input type="text" placeholder="Tìm kiếm..." ng-model="searchProduct">
+                                <button type="submit"><i class="fas fa-search"></i></button>
+                            </div> 
+
+                            <!-- Method-->
+                            <div id="method">
+                                <button >Danh Mục</button>
+                                <button class="add-product" ng-click="openEditProductPopup()"><i class="fas fa-plus icon-method"></i>Thêm mới</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Danh sách sản phẩm -->
+                        <div id="list-product">
+                            <table class="product-table">
+                                <tbody>
+                                    <th>Hình ảnh</th>
+                                    <th>ID</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Thương hiệu</th>
+                                    <th>Chất liệu</th>
+                                    <th>Giá</th>
+                                    <th>Tác vụ</th>
+                                <tr class="item" ng-repeat="item in listProduct | filter : filterProduct">
+                                    <td class="image-item">
+                                        <img ng-src="{{'http://localhost:52890/api/KinhMat/get-img/' + item.image}}" alt="Image_Glasses">
+                                    </td>
+                                    <td class="id-item">{{item.kinhmat_id}}</td>
+                                    <td class="name-item">{{item.tenKinhMat}}</td>
+                                    <td class="color-item">{{item.thuongHieu}}</td>
+                                    <td class="material-item">{{item.chatLieu}}</td>
+                                    <td class="price-item">{{item.listThuocTinh[0].giaBan | number: 0}}đ</td>
+                                    <td class="action-button">
+                                        <button class="btn-edit-pro" ng-click="openEditProductPopup(item)"><i class="far fa-edit"></i></button>
+                                        <button class="btn-delete-pro" ng-click="XoaProduct(item.kinhmat_id)"><i class="far fa-trash-alt"></i></button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                
+
+                            </table>
+
+                            <!-- Pop up Detail Product -->
+                            <div class="form-popup" id="formAddProduct" ng-show="isEditProductPopupVisible">
+                                <div class="form-container">
+                                    <h2>THÔNG TIN CHI TIẾT SẢN PHẨM</h2>
+                                    <div class="all-container-detailproduct">
+                                        <div class="details-glasses">
+                                            <!-- Danh mục -->
+                                            <div class="container-item">
+                                                <label for="category">Danh mục:</label>
+                                                <select id="danhmuc_id" class="form-control" ng-model="itemEdit.danhmuc_id">
+                                                    <option value="" disabled>Chọn danh mục</option>
+                                                    <option ng-repeat="item in listCate" value="{{item.danhmuc_id}}">{{item.tenDanhMuc}}</option>
+                                                </select>
+                                            </div>
+                                
+                                            <!-- Thông tin chung -->
+                                            <div class="container-item">
+                                                <label for="kinhmat_id">Mã sản phẩm:</label>
+                                                <input type="text" id="kinhmat_id" ng-model="itemEdit.kinhmat_id">
+                                            </div>
+                                
+                                            <div class="container-item">
+                                                <label for="tenKinhMat">Tên sản phẩm:</label>
+                                                <input type="text" id="tenKinhMat" ng-model="itemEdit.tenKinhMat">
+                                            </div>
+                                
+                                            <div class="container-item">
+                                                <label for="chatLieu">Chất liệu:</label>
+                                                <input type="text" id="chatLieu" ng-model="itemEdit.chatLieu">
+                                            </div>
+                                
+                                            <div class="container-item">
+                                                <label for="thuongHieu">Thương hiệu:</label>
+                                                <input type="text" id="thuongHieu" ng-model="itemEdit.thuongHieu">
+                                            </div>
+
+                                            <!-- Thông tin chi tiết -->
+                                            <div class="container-item">
+                                                <label for="moTa">Mô tả sản phẩm:</label>
+                                                <textarea id="moTa" rows="4" ng-model="itemEdit.moTa"></textarea>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- All hình ảnh -->
+                                        <div class="container-image">
+                                            <div class="main-image">
+                                                <label for="file">Ảnh đại diện:</label>
+                                                <input type="file" id="file" accept="image/*" onchange="angular.element(this).scope().onFileSelected(event)">
+                                                <div ng-if="imageUrl">
+                                                    <img ng-src="{{imageUrl}}" style="width: 200px; height: 200px;" alt="Ảnh đại diện" class="preview-image">
+                                                </div>
+                                                <div ng-if="!imageUrl">
+                                                    <img ng-src="{{'http://localhost:52890/api/KinhMat/get-img/' + itemEdit.image || itemEdit.image}}" style="width: 200px; height: 200px;" alt="Ảnh đại diện" class="preview-image">
+                                                </div>
+                                            </div>
+                                           
+                                        </div>
+                                    </div>
+
+                                    <!-- Thuộc tính -->
+                                    <div class="container-attribute">
+                                        <table class="table-attribute">
+                                            <thead>
+                                                <tr>
+                                                    <th>Màu sắc</th>
+                                                    <th>Độ cận</th>
+                                                    <th>Số lượng</th>
+                                                    <th>Giá bán</th>
+                                                    <th>Hình ảnh</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="item in itemEdit.listThuocTinh track by $index">
+                                                    <!-- Màu sắc -->
+                                                    <td>
+                                                        <input type="text" class="form-control" ng-model="item.mauSac" placeholder="Nhập màu sắc">
+                                                    </td>
+                                                    <!-- Độ cận -->
+                                                    <td>
+                                                        <input type="text" class="form-control" ng-model="item.doCan" placeholder="Nhập độ cận (nếu có)">
+                                                    </td>
+                                                    <!-- Số lượng -->
+                                                    <td>
+                                                        <input type="number" class="form-control"ng-model="item.soLuong">
+                                                    </td>
+                                                    <!-- Giá bán -->
+                                                    <td>
+                                                        <input type="number" class="form-control" ng-model="item.giaBan" placeholder="Nhập giá bán">
+                                                    </td>
+                                                    <!-- Hình ảnh -->
+                                                    <td class="attri-image">
+                                                        <label for="file-upload-{{$index}}" class="file-upload-label">
+                                                            Chọn tệp
+                                                            <input type="file" 
+                                                                   id="file-upload-{{$index}}" 
+                                                                   class="file-upload-input" 
+                                                                   accept="image/*" 
+                                                                   onchange="angular.element(this).scope().onSubImageSelectedEdit(event, item)"/>
+                                                        </label> 
+                                                        <!-- Hiển thị ảnh mới nếu có -->
+                                                        <div ng-if="item.imageConNew">
+                                                            <img ng-src="{{ item.imageConNew }}" alt="Hình ảnh con" 
+                                                                 style="width: 60px; height: 60px;">
+                                                        </div>
+                                                        <!-- Hiển thị ảnh cũ nếu chưa có ảnh mới -->
+                                                        <div ng-if="!item.imageConNew">
+                                                            <img ng-src="{{ 'http://localhost:52890/api/KinhMat/get-img/' + item.imageCon || item.imageCon}}" alt="Hình ảnh con" 
+                                                                 style="width: 60px; height: 60px;">
+                                                        </div>
+                                                    </td>                                                    
+
+                                                    <!-- Hành động -->
+                                                    <td class="actions-attri">
+                                                        <button type="button" class=" btn-danger" ng-click="removeAttribute(item.thuoctinh_id)">Xóa</button>
+                                                        <button type="button" class=" btn-danger" ng-click="updateAttr(item.thuoctinh_id)">Sửa</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input type="text" class="form-control" ng-model="newAttribute.mauSac" placeholder="Nhập màu sắc">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control" ng-model="newAttribute.doCan" placeholder="Nhập độ cận (nếu có)">
+                                                    </td>
+                                                    <td style="width: 50px;">
+                                                        <input type="number" class="form-control"ng-model="newAttribute.soLuong">
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control" ng-model="newAttribute.giaBan" placeholder="Nhập giá bán">
+                                                    </td>
+                                                    <td class="attri-image">
+                                                        <label for="file-upload-new" class="file-upload-label-new">
+                                                            Chọn tệp
+                                                            <input type="file" 
+                                                                    id="file-upload-new" 
+                                                                    class="file-upload-input-new" 
+                                                                    accept="image/*" 
+                                                                    onchange="angular.element(this).scope().onSubImageSelected(event)"/>
+                                                        </label>                                                          
+                                                        <div ng-if="newAttribute.imageCon">
+                                                            <img ng-src="{{newAttribute.imageCon}}" alt="Hình ảnh con" style="width: 60px; height: 60px;">
+                                                        </div>
+                                                        <div ng-if="!newAttribute.imageCon">
+                                                            <img ng-src="{{'http://localhost:52890/api/KinhMat/get-img/' + itemEdit.listThuocTinh.imageCon}}" alt="Hình ảnh con" style="width: 60px; height: 60px;">
+                                                        </div>v
+                                                    </td>
+                                                    <td>
+                                                        <button ng-click="addRow()">Thêm</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <button type="button" class="btn btn-primary" ng-click="submitAttributes()">+ Thêm thuộc tính</button>
+                                    </div>
+                                    <!-- Buttons -->
+                                    <div class="actions">
+                                        <button type="button" class="btn save" ng-click="submitEditForm()">Lưu</button>
+                                        <button type="button" class="btn cancel" ng-click="closeEditProductPopup()">Đóng</button>
+                                    </div>
+                                </div>
+                                 
+                            </div>
+                                                        
+                        </div>
+                    </div>
+
+                    <!-- Content news -->
+                    <div id="news" class="content" ng-controller="NewsCtrl">
+                        <!-- Các điều khiển -->
+                        <div id="controller">
+                            <!-- Method-->
+                            <div id="method">
+                                <button class="tab-news" ng-class="{'active': activeTab === 'new'}" ng-click="switchTab('new')"><i class="fas fa-plus"></i> New</button>
+                                <button class="tab-news" ng-class="{'active': activeTab === 'list'}" ng-click="switchTab('list')">View All</button>
+                            </div>                            
+
+                            <!-- Tìm kiếm -->
+                            <div class="search-box">
+                                <input type="text" placeholder="Tìm kiếm..." ng-model="searchNews">
+                                <button type="submit"><i class="fas fa-search"></i></button>
+                            </div> 
+
+                        </div>
+                        <div id="news-content" ng-show="activeTab === 'new'" >
+                            <div id="news-left">
+                                <h2>Edit Post</h2>
+                                <div class="name-image-control">
+                                    <input type="text" placeholder="Tên bài viết ..." ng-model="newsEdit.tenBaiViet" class="name-news">
+                                    <label for="file-upload-new" class="addImage-news">
+                                        Add Image
+                                        <input type="file" 
+                                                id="file-upload-new" 
+                                                class="file-upload-input-new" 
+                                                accept="image/*" 
+                                                onchange="angular.element(this).scope().onFileSelected(event)"/>
+                                    </label>  
+                                </div>
+                                <div id="editor-container">
+                                    <div  ng-if="newsEdit.image">
+                                        <img ng-src="{{newsEdit.image}}" style="width: 100%; height: 200px;" alt="Hình ảnh bài viết">
+                                    </div>
+                                    <textarea id="my-editor" ng-model="newsEdit.noiDung"></textarea>
+                                </div>
+                            </div>
+                            <div id="news-right">
+                                <div id="publish">
+                                    <div class="title-publish">
+                                        <h3>Publish</h3>
+                                        <button class="update-publish">Update</button>
+                                    </div>
+                                    <div id="publish-content">
+                                        <p>
+                                            <i class="fas fa-signal"></i>
+                                            <span>Status: <span class="bold">Published</span></span>
+                                            <a href="" id="edit-status">Edit</a>
+                                        </p>
+                                        <p>
+                                            <i class="far fa-eye"></i>
+                                            <span>Visibility: <span class="bold">Public</span></span>
+                                            <a href="" id="edit-visibility">Edit</a>
+                                        </p>
+                                        <p>
+                                            <i class="fas fa-history"></i>
+                                            <span>Revisions: <span class="bold">2</span></span>
+                                            <a href="" id="see-user">Brown</a>
+                                        </p>
+                                        <p>
+                                            <i class="far fa-calendar-alt"></i>
+                                            <span>Publshed on: <span class="timenow-published">2</span></span>
+                                            <a href="" id="edit-publishedon">Edit</a>
+                                        </p>
+                                    </div>
+                                    
+                                </div>
+                                <div id="tags">
+                                    <div class="title-tags">
+                                        <h3>Tags</h3>
+                                    </div>
+                                    <div id="tags-content">
+                                        <input type="text" placeholder="#hastag...">
+                                        <button ng-click="AddNews()">Add</button>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div id="popup-news" ng-show="isOpenPopUpNews" class="overlay">
+                            <div id="popup-news-container">
+                                <div class="item-news">
+                                    <label for="title">Tên bài viết: </label>
+                                    <input type="text" ng-model="selectedNews.tenBaiViet">
+                                </div>
+                                <div class="item-news">
+                                    <label for="file-upload-news" class="file-upload-label-news">
+                                        Chọn tệp
+                                        <input type="file" 
+                                               id="file-upload-news" 
+                                               class="file-upload-input-news" 
+                                               accept="image/*" 
+                                               onchange="angular.element(this).scope().onNewsSelectedImage(event)" />
+                                    </label> 
+                                    <div ng-if="selectedNews.image">
+                                        <img ng-src="{{selectedNews.image}}" style="width: 100%; height: 150px;" alt="Preview Image">
+                                    </div>
+                                </div>
+                                <div class="item-news">
+                                    <label for="content">Nội dung: </label>
+                                    <textarea ng-model="selectedNews.noiDung"></textarea>
+                                </div>
+                                <div class="item-news">
+                                    <label for="dateUp">Ngày đăng: </label>
+                                    <input type="text" ng-model="selectedNews.ngayDang">
+                                </div>
+                                <div class="actions-news">
+                                    <button ng-click="closePopUpNews()">Thoát</button>
+                                    <button ng-click="submitEditForm(selectedNews.baiviet_id)">Lưu</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="news-all" ng-show="activeTab === 'list'">
+                            <div id="news-all-container">
+                                <table>
+                                    <thead>
+                                        <th>ID</th>
+                                        <th>Tên Bài viết</th>
+                                        <th>Người đăng</th>
+                                        <th>Ngày đăng</th>
+                                        <th>
+                                            
+                                        </th>
+                                    </thead>
+                                    <tbody style="text-align: center;">
+                                        <tr ng-repeat="news in listNews | filter: filterBaiViet">
+                                            <td>{{news.baiviet_id}}</td>
+                                            <td>{{news.tenBaiViet}}</td>
+                                            <td>{{news.tenNguoiDung}}</td>
+                                            <td>{{news.ngayDang}}</td>
+                                            <td>
+                                                <button ng-click="openPopUpNews(news)">Sửa</button>
+                                                <button ng-click="XoaNews(news.baiviet_id)">Xóa</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <!-- Content price-->
+                    <div id="price" class="content" ng-controller="PriceCtrl">
+                        <div id="price-container">
+                            <div id="price-left">
+                                <h2>Thông Tin Chi Tiết</h2>
+                                <div class="input-group">
+                                    <label for="productName">Tên sản phẩm:</label>
+                                    <input type="text" 
+                                        id="productName" 
+                                        name="productName" 
+                                        ng-model="selectedAttribute.tenKinhMat" 
+                                        placeholder="Tên sản phẩm">
+                                    
+                                    <label for="currentPrice">Giá hiện tại:</label>
+                                    <input type="text" 
+                                        id="currentPrice" 
+                                        name="currentPrice" 
+                                        ng-model="selectedAttribute.giaBan" 
+                                        placeholder="Giá hiện tại">
+                                </div>
+                                <div id="content-price" class="input-group">
+                                    <div class="container-line">
+                                        <div>
+                                            <label for="discountCode">Mã giảm giá:</label>
+                                            <input type="text" id="discountCode" ng-model="price_id" placeholder="Mã giảm giá">
+                                        </div>
+                                        <div>
+                                            <label for="discountPercent">Phần trăm giảm:</label>
+                                            <input type="number" id="discountPercent" ng-model="phanTramGiam" placeholder="Phần trăm giảm">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="container-line">
+                                        <div>
+                                            <label for="fromDate">Ngày bắt đầu:</label>
+                                            <input type="date" id="fromDate" ng-model="ngayBatDau" name="fromDate">
+                                        </div>
+                                        <div>
+                                            <label for="toDate">Ngày kết thúc:</label>
+                                            <input type="date" id="toDate" ng-model="ngayKetThuc" name="toDate">           
+                                        </div>
+                                    </div>
+
+                                    <div class="container-line">
+                                        <div>
+                                            <label for="updatePrice">Giá sửa:</label>
+                                            <input type="number" id="updatePrice" name="updatePrice" ng-model="giaSua" placeholder="Giá sửa">
+                                        </div>
+                                        <div>
+                                            <label for="dateUpdate">Ngày sửa:</label>
+                                            <input type="date" id="dateUpdate" ng-model="ngaySuaGia" name="dateUpdate">        
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="action-buttons">
+                                    <button id="addDetail" ng-click="AddSale()">Thêm</button>
+                                    <button id="editDetail">Sửa</button>
+                                    <button id="deleteDetail">Xóa</button>
+                                </div>
+                            </div>
+                            <div id="listDetailProduct">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                     <h2>Danh Sách Sản Phẩm</h2>
+                                     <div class="pagination-container-price">
+                                        <button class="pagination-button-price" ng-click="setPage(currentPage - 1)" ng-disabled="currentPage === 1">&lt;&lt;</button>
+                                        <span class="pagination-info-price"> {{ currentPage }} / {{ totalPages() }}</span>
+                                        <button class="pagination-button-price" ng-click="setPage(currentPage + 1)" ng-disabled="currentPage === totalPages()">&gt;&gt;</button>
+                                    </div>
+                                </div>
+                               
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Tên kính mắt</th>
+                                            <th>Giá bán</th>
+                                            <th>Màu sắc</th>
+                                            <th>Độ Cận</th>
+                                            <th>Số lượng</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="chitiet in paginatedProducts()">
+                                            <td><input 
+                                                type="radio" for="select-attri" name="select-attri"
+                                                ng-click="selectedAttr(chitiet, $event)"></td>
+                                            <td>{{ chitiet.tenKinhMat }}</td>
+                                            <td>{{ chitiet.giaBan }}</td>
+                                            <td>{{ chitiet.mauSac }}</td>
+                                            <td>{{ chitiet.doCan }}</td>
+                                            <td>{{ chitiet.soLuong }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Content Customers -->
+                    <div id="customers" class="content" ng-controller="UserCtrl">
+                        <!-- Các điều khiển -->
+                        <div id="controller">
+                            <!-- Danh mục -->
+                            <div id="sortby">
+                                <button><i class="fas fa-sort-amount-up-alt"></i></button>
+                                <button><i class="fas fa-sort-amount-down"></i></button>
+                                <select name="glasses" id="category-glasses">
+                                    <option value="Gọng kính">Gọng kính</option>
+                                    <option value="Kính râm">Kính râm</option>
+                                    <option value="Tròng kính">Tròng kính</option>
+                                    <option value="Kính thời trang">Kính thời trang</option>
+                                    <option value="Phụ kiện">Phụ kiện</option>
+                                </select>
+                            </div>
+
+                            <!-- Tìm kiếm -->
+                            <div class="search-box">
+                                <input type="text" placeholder="Tìm kiếm..." ng-model="searchUser">
+                                <button type="submit"><i class="fas fa-search"></i></button>
+                            </div> 
+
+                        </div>
+                        
+                        <!-- Danh sách sản phẩm -->
+                        <div id="list-user">
+                            <table class="user-table">
+                                <th>Hình ảnh</th>
+                                <th>ID</th>
+                                <th>Tên người dùng</th>
+                                <th>Role</th>
+                                <th>Email</th>
+                                <th>Số điện thoại</th>
+                                <th>Tác vụ</th>
+                                <tr class="user" ng-repeat="user in listUser | filter : filterUser">
+                                    <td class="image-user">
+                                        <img ng-src="{{'http://localhost:52890/api/KinhMat/get-img/' + user.image}}" alt="Image-User">
+                                    </td>
+                                    <td class="id-user">{{user.nguoidung_id}}</td>
+                                    <td class="name-user">{{user.tenNguoiDung}}</td>
+                                    <td class="date-signup">{{user.role}}</td>
+                                    <td class="email-user">{{user.email}}</td>
+                                    <td class="phone-user">{{user.soDienThoai}}</td>
+                                    <td class="action-buttons">
+                                        <button class="btn-edit" ng-click="openEditUserPopup(user)"><i class="far fa-edit"></i></button>
+                                        <button class="btn-delete" ng-click="XoaUser(user.nguoidung_id)"><i class="far fa-trash-alt"></i></button>
+                                    </td>
+                                </tr>
+                                
+                            </table>
+                        </div>
+
+                        <!-- Popup User -->
+                        <!-- Popup chỉnh sửa người dùng -->
+                        <div class="form-popup-user" id="formEditUser" ng-if="isEditUserPopupVisible">
+                            <div class="form-container-user">
+                                <form ng-submit="submitEditForm()">
+                                    <div class="details-info-user">
+                                        <h2>Chỉnh Sửa Thông Tin Người Dùng</h2>
+                                        
+                                        <div class="content-wrapper">
+                                            <!-- Các trường thông tin người dùng -->
+                                            <div class="info-fields">
+                                                <!-- Tên tài khoản -->
+                                                <div class="container-item">
+                                                    <label for="nguoidung_id">ID:</label>
+                                                    <input type="text" id="nguoidung_id" ng-model="userEdit.nguoidung_id" required>
+                                                </div>
+
+                                                <!-- Tên người dùng -->
+                                                <div class="container-item">
+                                                    <label for="tenNguoiDung">Tên người dùng:</label>
+                                                    <input type="text" id="tenNguoiDung" ng-model="userEdit.tenNguoiDung" required>
+                                                </div>
+
+                                                <!-- Tên tài khoản -->
+                                                <div class="container-item">
+                                                    <label for="tenTaiKhoan">Tên tài khoản:</label>
+                                                    <input type="text" id="tenTaiKhoan" ng-model="userEdit.tenTaiKhoan" required>
+                                                </div>
+
+                                                <!-- Mật khẩu-->
+                                                <div class="container-item">
+                                                    <label for="matKhau">Mật khẩu:</label>
+                                                    <input type="password" id="matKhau" ng-model="userEdit.matKhau" required>
+                                                </div>
+
+                                                <!-- Ngày đăng ký -->
+                                                <div class="container-item">
+                                                    <label for="ngayDangKy">Ngày đăng ký:</label>
+                                                    <input type="text" id="ngayDangKy" ng-model="userEdit.ngayDangKy " required>
+                                                </div>
+
+                                                <!-- Địa chỉ -->
+                                                <div class="container-item">
+                                                    <label for="diaChi">Địa chỉ:</label>
+                                                    <input type="text" id="diaChiUser" ng-model="userEdit.diaChi" required>
+                                                </div>
+
+                                                <!-- Email -->
+                                                <div class="container-item">
+                                                    <label for="email">Email:</label>
+                                                    <input type="email" id="email" ng-model="userEdit.email" required>
+                                                </div>
+
+                                                <!-- Số điện thoại -->
+                                                <div class="container-item">
+                                                    <label for="soDienThoai">Số điện thoại:</label>
+                                                    <input type="text" id="soDienThoaiUser" ng-model="userEdit.soDienThoai" required>
+                                                </div>
+
+                                                <!-- Role  -->
+                                                <div class="container-item">
+                                                    <label for="role">Role:</label>
+                                                    <input type="text" id="role" ng-model="userEdit.role" required>
+                                                </div>
+
+                                                <!-- Hình ảnh -->
+                                                <div class="container-item">
+                                                    <label for="image">Hình ảnh:</label>
+                                                    <input type="file"  id="file"  onchange="angular.element(this).scope().onFileSelected(event)"/>                                                
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Hình ảnh người dùng -->
+                                            <div class="image-container">
+                                                <img ng-src="{{previewImage || userEdit.image}}" alt="Hình ảnh người dùng" class="user-image-preview" id="imagePreview">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="container-btn">
+                                        <button type="button" class="btn-add" ng-click="AddUser()">Add</button>
+                                        <button type="submit" class="btn">Save</button>
+                                        <button type="button" class="btn cancel" ng-click="closeEditUserPopup()">Exit</button>
+                                    </div>
+                                    
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Orders -->
+                    <div id="orders" class="content" ng-controller="HoaDonBanCtrl">
+                        <!-- Tab Order Controller -->
+                        <div id="orders-container">
+                            <div id="tab-orders">
+                                <div class="tab-order active" onclick="openTabOrder(event, 'all-order')">
+                                    Tất cả
+                                </div>
+                                <div class="tab-order " onclick="openTabOrder(event, 'neworder')">
+                                    Đơn hàng mới
+                                </div>
+                            </div>
+
+                            <!-- Content tab order -->
+                            <div id="all-order" class="content-order">
+                                <!-- Search arrange-->
+                                <div id="search-control">
+                                    <button id="filter"><i class="fas fa-filter"></i></button>
+                                    <div class="search-container">
+                                        <i class="fas fa-search search-icon"></i>
+                                        <input type="text" class="search-input" ng-model="searchOrder" placeholder="Tìm kiếm...">
+                                    </div>
+                                    <input type="date" id="date-order">
+                                    <select name="status" id="status">
+                                        <option value="completed">Đã xử lý</option>
+                                        <option value="loading">Chưa xử lý</option>
+                                    </select>
+                                    <button>Xuất hóa đơn</button>
+                                </div>
+
+                                <!-- List order -->
+                                <table id="list-order" >
+                                    <thead>
+                                        <tr>
+                                            <th><input type="checkbox" onclick="toggleAll(this)"></th> 
+                                            <th> Mã </th>
+                                            <th> Ngày tạo </th>
+                                            <th> Khách hàng </th>
+                                            <th> Thanh toán </th>
+                                            <th> Giao hàng </th>
+                                            <th> Tổng tiền </th>         
+                                            <th> </th>         
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="x in listHD | filter : filterOrder" >
+                                            <td><input type="checkbox" class="row-checkbox"></td>
+                                            <td>{{x.donhangban_id}}</td>
+                                            <td>{{x.ngayBan | date: 'dd/MM/yyyy'}}</td>
+                                            <td>{{x.tenNguoiDung}}</td>
+                                            <td class="status-processing">{{x.trangThaiThanhToan}}</td>
+                                            <td class="status-shipped">{{x.trangThaiGiaoHang}}</td>
+                                            <td>{{x.totalBill | number:0}}đ</td>
+                                            <td>
+                                                <button class= "btn-bill btn-Detail-bill" 
+                                                    ng-click="xemChiTiet(x)"
+                                                    ng-disabled="donHang.trangThaiDonHangNhap === 'Đã hủy'">
+                                                    Xem Chi Tiết
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Popup Chi Tiết -->
+                            <div class="popup-sales" ng-show="showDetailBill">
+                                <div class="popup-sales-content">
+                                    <div class="header-sales">
+                                        <button class="btn-close-popup" ng-click="closeDetailBillPopup()">Đóng</button>
+                                    </div>
+                                    <h3>Chi Tiết Hóa Đơn Bán</h3>
+                                    <div class="info-order">
+                                        <p><strong>Mã Đơn Hàng:</strong> {{ selectedOrder.donhangban_id }}</p>
+                                        <p><strong>Ngày Bán:</strong> {{ selectedOrder.ngayBan | date: 'dd/MM/yyyy' }}</p>
+                                        <p><strong>Tên Người Dùng:</strong> {{ selectedOrder.tenNguoiDung }}</p>
+                                        <p><strong>Status:</strong>
+                                            <select id="selectStatus" ng-model="selectedOrder.trangThaiDonHang" ng-options="status for status in orderStatuses">
+                                                <option value="">Chọn trạng thái</option>
+                                            </select>
+                                            <button class="btn-update-status" ng-click="UpdateOrderStatus(selectedOrder)">Update Status</button>
+                                        </p>
+                                        
+                                    </div>
+
+                                    <h4>Sản Phẩm</h4>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Mã Chi Tiết</th>
+                                                <th>Tên sản phẩm</th>
+                                                <th>Màu sắc</th>
+                                                <th>Độ cận</th>
+                                                <th>Giá Bán</th>
+                                                <th>Số Lượng</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="item in selectedOrder.listChiTietDHB">
+                                                <td>{{ item.chitietdhb_id }}</td>
+                                                <td>{{ item.infoProductByOption.tenKinhMat }}</td>
+                                                <td>{{ item.infoProductByOption.mauSac }}</td>
+                                                <td>{{ item.infoProductByOption.doCan }}</td>
+                                                <td>{{ item.infoProductByOption.giaBan | number:0 }}</td>
+                                                <td>{{ item.soLuong }}</td>
+                                                
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <p><strong>Trạng thái giao hàng:</strong></p>
+                                    <select id="selectStatus" ng-model="selectedOrder.trangThaiGiaoHang" ng-options="status for status in statusOptions">
+                                        <option value="">Chọn trạng thái</option>
+                                    </select>
+                                    
+                                    <p><strong>Trạng Thái Thanh Toán:</strong> {{ selectedOrder.trangThaiThanhToan }}</p>
+                                    <p><strong>Ngày hoàn thành đơn hàng:</strong> {{ selectedOrder.ngayHoanThanhDH | date: 'dd/MM/yyyy'}}</p>
+                                </div>
+                            </div>
+
+                        </div>
+                        
+                    </div>
+
+                    <!-- Content Suppliers -->
+                    <div id="suppliers" class="content" ng-controller="NhaCungCapCtrl">
+                        <!-- Điền thông tin -->
+                        <div id="container-suppliers" >
+                            <div id="input-info-supplier" ng-submit="addNhaCungCap()">
+                                <h2>Thông Tin Chi Tiết</h2>
+                                <div class="container-attribute">
+                                    <label for="nhaCC_id">ID: </label>
+                                    <input type="text" id="nhaCC_id" ng-model="nhaCC_id" required>
+                                </div>   
+                                <div class="container-attribute">
+                                    <label for="tenNhaCC">Tên nhà cung cấp: </label>
+                                    <input type="text" id="tenNhaCC" ng-model="tenNhaCC" required>
+                                </div> 
+                                <div class="container-attribute">
+                                    <label for="soDienThoai">Số điện thoại: </label>
+                                    <input type="text" id="soDienThoai" ng-model="soDienThoai" required>
+                                </div> 
+                                <div class="container-attribute">
+                                    <label for="diaChi">Địa chỉ: </label>
+                                    <input type="text" id="diaChi" ng-model="diaChi" required>
+                                </div>  
+                                <div id="container-control">
+                                    <button type="button" ng-click="Luu()" style="background-color: green;">Thêm </button>
+                                    <button type="button" ng-click="Sua()" style="background-color: rgb(0, 140, 255);">Sửa </button>
+                                    <button type="button" ng-click="Xoa(nhaCC_id)" style="background-color: red;">Xóa </button>
+                                </div>  
+                            </div>
+                        <!-- Danh sách nhà cung cấp -->
+                        <div id="list-suppliers" >
+                            <h2>Danh Sách Nhà Cung Cấp</h2>
+                            <div class="search-container">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" class="search-input" ng-model="searchSuppliers" placeholder="Tìm kiếm...">
+                            </div>
+                            <table>
+                                <th>ID</th>
+                                <th>Tên nhà cung cấp</th>
+                                <th>Số điện thoại</th>
+                                <th>Địa chỉ</th>
+                                <tr ng-repeat="ncc in listNCC | filter : filterSupplier " ng-click="selectItem(ncc)">
+                                    <td class="id-suppler">{{ncc.nhaCC_id}}</td>
+                                    <td class="name-supllier">{{ncc.tenNhaCC}}</td>
+                                    <td class="phone-supplier">{{ncc.soDienThoai}}</td>
+                                    <td class="address-supplier">{{ncc.diaChi}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="id-suppler">1209201</td>
+                                    <td class="name-supllier">Công ty TNHH A</td>
+                                    <td class="phone-supplier">0564105678</td>
+                                    <td class="address-supplier">Hưng yên</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    </div>
+
+                    <!-- Content Imports -->
+                    <div id="imports" class="content" ng-controller="ImportsCtrl">
+                        <div class="imports-container">
+                            <div id="imports-container-top">
+                                <!-- Tabs -->
+                                <div class="tabs-imports">
+                                    <div class="tab-imp" ng-class="{'active': activeTab === 'list'}" ng-click="switchTab('list')">View All</div>
+                                    <div class="tab-imp" ng-class="{'active': activeTab === 'add'}" ng-click="switchTab('add')">Add</div>
+                                </div>
+                                <!-- Search -->
+                                <div class="search-import">
+                                    <input type="text" placeholder="Nhập nội dung cần tìm ...">
+                                    
+                                </div>
+                            </div>
+                                        
+                            <!-- Tab Content -->
+                            <div class= "listImports" ng-show="activeTab === 'list'">
+                                <h3>Danh Sách Đơn Hàng</h3>
+                                <table>
+                                <thead>
+                                    <tr>
+                                    <th>Mã Đơn</th>
+                                    <th>Nhà Cung Cấp</th>
+                                    <th>Ngày Nhập</th>
+                                    <th>Tổng Số Lượng</th>
+                                    <th>Tác vụ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="donHang in listImports" ng-class="{'text-red': donHang.trangThaiDonHangNhap === 'Đã hủy'}">
+                                        <td>{{ donHang.donhangnhap_id }}</td>
+                                        <td>{{ donHang.tenNhaCC }}</td>
+                                        <td>{{ donHang.ngayNhap | date: 'dd/MM/yyyy'}}</td>
+                                        <td>{{ getTotalQuantity(donHang.listChiTietDHN) }}</td>
+                                        <td>
+                                            <button class= "btn-import btn-Detail-Import" 
+                                                    ng-click="xemChiTiet(donHang)"
+                                                    ng-disabled="donHang.trangThaiDonHangNhap === 'Đã hủy'">
+                                                    Xem Chi Tiết
+                                            </button>
+                                            <button>
+                                                Xóa
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        
+                            <div class="AddImport" ng-show="activeTab === 'add'">
+                                <form ng-submit="AddImport()" class="add-import-form">
+                                    <!-- Thông Tin Đơn Hàng -->
+                                    <div class="import-info-input">
+                                        <h3>Thông Tin Đơn Hàng</h3>
+                                        <div class="container-formgroupimport">
+                                            <div class="form-group-import">
+                                                <label for="donhangnhap_id">Mã Đơn</label>
+                                                <input type="text" id="donhangnhap_id" ng-model="newOrder.donhangnhap_id" placeholder="Nhập mã đơn" required>
+                                            </div>
+                                            <div class="form-group-import">
+                                                <label for="nhaCC_id">Nhà Cung Cấp</label>
+                                                <select id="nhaCC_id" class="form-control" ng-model="newOrder.nhaCC_id" required>
+                                                    <option value="" disabled selected>Chọn nhà cung cấp</option>
+                                                    <option ng-repeat="item in listSup" value="{{item.nhaCC_id}}">{{item.tenNhaCC}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group-import">
+                                                <label for="ngayNhap">Ngày Nhập</label>
+                                                <input type="date" id="ngayNhap" ng-model="newOrder.ngayNhap" required>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                            
+                                    <!-- Danh Sách Sản Phẩm -->
+                                    <div class="import-product-list">
+                                        <h3>Danh Sách Sản Phẩm</h3>
+                                        <div class="table-wrapper">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Mã Sản Phẩm</th>
+                                                        <th>Tên Kính Mắt</th>
+                                                        <th>Màu Sắc</th>
+                                                        <th>Độ Cận</th>
+                                                        <th>Số Lượng</th>
+                                                        <th>Đơn Giá Nhập</th>
+                                                        <th>Thành Tiền</th>
+                                                        <th>Hành Động</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- Hàng danh sách sản phẩm đã nhập -->
+                                                    <tr ng-repeat="product in newOrder.listChiTietDHN">
+                                                        <td>{{ product.kinhmat_id }}</td>
+                                                        <td>{{ product.tenKinhMat }}</td>
+                                                        <td>{{ product.mauSac }}</td>
+                                                        <td>{{ product.doCan }}</td>
+                                                        <td>{{ product.soLuong }}</td>
+                                                        <td>{{ product.giaNhap | number: 0}}đ</td>
+                                                        <td>{{ product.soLuong * product.giaNhap | number: 0 }}đ</td>
+                                                        <td>
+                                                            <button type="button" class="btn-delete" ng-click="removeProduct($index)">Xóa</button>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- Hàng để nhập liệu -->
+                                                    <tr>
+                                                        <td>
+                                                            <input type="text" placeholder="Mã sản phẩm" ng-model="newProduct.kinhmat_id" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" placeholder="Tên kính mắt" ng-model="newProduct.tenKinhMat" ng-blur="getProductDetails()"  required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" placeholder="Màu sắc" ng-model="newProduct.mauSac" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" placeholder="Độ cận" ng-model="newProduct.doCan">
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" placeholder="Số lượng" ng-model="newProduct.soLuong" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" placeholder="Đơn giá" ng-model="newProduct.giaNhap" required>
+                                                        </td>
+                                                        <td>
+                                                            {{ newProduct.soLuong * newProduct.giaNhap | number: 0 }}đ
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn-add-product" ng-click="addProduct()">Thêm</button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                            
+                                    <!-- Nút Gửi Đơn -->
+                                    <div class="form-actions">
+                                        <button type="submit" id="submit-addImport" class="btn-submit">Thêm Đơn Hàng</button>
+                                    </div>
+                                </form>
+                            </div>                            
+                            
+                            <!-- Popup Chi Tiết -->
+                            <div class="popup-imports" ng-show="showDetailImport">
+                                <div class="popup-imports-content">
+                                    <div>
+                                        <button class="btn-close-import" ng-click="closeDetailImportPopup()">Đóng</button>
+                                        <button class="btn-print-export" ng-click="ExportBill(selectedOrder)">Xuất hóa đơn</button>
+                                    </div>
+                                    <h3>Hóa Đơn Nhập</h3>
+                                    <div class="info-import">
+                                        <p><strong>Chi Tiết Đơn Hàng:</strong> {{ selectedOrder.donhangnhap_id }}</p>
+                                        <p><strong>Nhà Cung Cấp:</strong> {{ selectedOrder.tenNhaCC }}</p>
+                                        <p><strong>Ngày Nhập:</strong> {{ selectedOrder.ngayNhap | date: 'dd/MM/yyyy'}}</p>
+                                        
+                                    </div>
+                                    
+                                    <h4>Sản Phẩm</h4>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Mã Sản Phẩm</th>
+                                                <th>Tên Sản Phẩm</th>
+                                                <th>Màu Sắc</th>
+                                                <th>Độ Cận</th>
+                                                <th>Số Lượng</th>
+                                                <th>Giá Nhập</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="sp in selectedOrder.listChiTietDHN">
+                                                <td>{{ sp.kinhmat_id }}</td>
+                                                <td>{{ sp.tenKinhMat }}</td>
+                                                <td>{{ sp.mauSac }}</td>
+                                                <td>{{ sp.doCan }}</td>
+                                                <td>{{ sp.soLuong }}</td>
+                                                <td>{{ sp.giaNhap | number: 0}}đ</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div style="display: flex; justify-content: space-between; font-size: 14px;">
+                                        <p>Tổng số lượng nhập: {{ getTotalQuantity(selectedOrder.listChiTietDHN) }}</p>
+                                        <p style="font-weight: bold; color: red;">Tổng tiền nhập: {{ getTotalPrice(selectedOrder.listChiTietDHN) | number: 0}}đ</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <!-- Content Reports-->
+                    <div id="reports" class="content">
+                        <h2>Báo Cáo</h2>
+                        <p>Đây là nội dung cho tab Báo Cáo.</p>
+                    </div>
+
+                    <!-- Content Settings -->
+                    <div id="settings" class="content">
+                        <h2>Cài Đặt</h2>
+                        <p>Đây là nội dung cho tab Cài Đặt.</p>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>

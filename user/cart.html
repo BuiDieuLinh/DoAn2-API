@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="css/cart.css">
+    <link rel="stylesheet" href="./image/">
+    <link rel="icon" href="logo.png">
+    <script src="./js/jquery-3.7.1.js" type="text/javascript"></script>
+    <script src="./angular/angular.min.js"></script>
+    <script src="./angular/gobal.js"></script>
+    <script src="./angular/cart.js"></script>
+    <script src="./angular/product.js" type="text/javascript"></script>
+    <script src="./angular/category.js" type="text/javascript"></script>
+    <title>Đồ Án 2</title>
+</head>
+<body ng-app="PageUser" ng-controller="CartCtrl">
+    <script src="./js/cart.js" type="text/javascript"></script>
+    <div id="wapper">
+        <div id="header">
+            <div id="header-top"> 
+                <div id="header-top-container">
+                    <div>
+                        <a class="name"><i class="fas fa-glasses"></i>LING GLASSES</a>        
+                    </div> 
+                    <div class="search-box">
+                        <input type="text" placeholder="Tìm kiếm...">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </div> 
+                    <div id="cart-container">
+                        <div id="user-container">                     
+                            <i class="far fa-user"></i>
+                            <p id="userLogin">Tài khoản</br>Đăng nhập/ Đăng ký</p>
+                            <i class="fas fa-sort-down"></i>
+                            <ul id="subnav-user">
+                                <li id="login"><a href=""><i class="fas fa-sign-in-alt"></i> Đăng nhập</a></li>
+                                <li id="register"><a href=""><i class="fas fa-sign-in-alt"></i> Đăng ký</a></li>
+                                <li id="account" style="display: none;"><a href="account.html"><i class="fas fa-user"></i> Tài khoản của tôi</a></li>
+                                <li id="orders" style="display: none;"><a href=""><i class="fas fa-box"></i> Đơn hàng của tôi</a></li>
+                                <li id="logout"><a onclick="Exit()"><i class="fas fa-sign-in-alt"></i> Thoát</a></li>
+                            </ul>
+                        </div>
+                        <div id="cart" ng-controller="ProductCtrl">
+                            <a href="cart.html"> 
+                                <i class="fas fa-cart-plus"></i>
+                                <span class="cart-count">{{cartCount}}</span>
+                            </a>
+                        </div>
+                        
+                    </div> 
+                </div>
+                
+            </div>
+            <hr size="1" color="#ccc"/>
+            <div id="header-bottom" ng-controller="CategoryCtrl">
+                <div style="width: 90%; margin: 0px auto; display: flex; ">
+                    <ul id="nav">
+                        <li><a href="index.html">TRANG CHỦ</a></li>
+                    </ul>
+                    <ul id="nav" ng-repeat="cate in listCategory">
+                        <li><a  ng-click="viewCategory(cate.danhmuc_id)">{{cate.tenDanhMuc}}</a></li>   
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="content">
+            <div id="content-container">
+                <div id="listProduct-cart">
+                    <div id="list-product-header">
+                        <h2>SẢN PHẨM</h2>
+                        <button onclick="window.location.href = 'index.html'" class="btnBackHome">
+                            <i class="fas fa-long-arrow-alt-left"></i>  Tiếp tục xem sản phẩm
+                        </button>
+                    </div>
+                    
+                    <div class="list-product">
+                        <!-- Danh sách sản phẩm -->
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" onclick="toggleAll(this)"></th>
+                                    <th>Hình ảnh</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Màu sắc</th>
+                                    <th>Đơn giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Thành tiền</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="x in cartItems track by $index" data-id="{{x.thuoctinh_id}}">
+                                    <td><input type="checkbox" onclick="updateOrder(this)"></td>
+                                    <td><img src="{{'http://localhost:44364/api/BaiViet/get-img/' + x.photo}}" alt="Hình ảnh sản phẩm"></td>
+                                    <td class="product-name">{{x.name}}</td>
+                                    <td class="product-color">{{x.color}}</td>
+                                    <td class="unit-price">{{x.price}}</td>
+                                    <td>
+                                        <input type="number" value="1" min="1" ng-model="x.quanlity"  onchange="updateQuantity(this)">
+                                    </td>
+                                    <td class="total-price">{{x.price * x.quanlity}}</td>
+                                    <td>
+                                        <button ng-click="removeFromCart($index)">Xóa</button>
+                                    </td>
+                                </tr>
+                                
+                                
+                            </tbody>
+                        </table>
+
+                        <!-- Tạm tính -->
+                        <div class="cart-summary">
+                            <p><strong>Tổng tiền:</strong> <span id="cart-total"></span> </p>
+                            <button class="checkout-btn" ng-click="createBill()" onclick="window.location.href='account.html'">Thanh toán</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Thông tin hóa đơn -->
+                <div id="content-left">
+                    <h2>THÔNG TIN THANH TOÁN</h2>
+                    <form id="formAddress">
+                        <input type="text" id="nameUser" ng-model="infoUser.tenNguoiDung" name="name" placeholder="Họ tên" required>
+                        <input type="text" id="addressShip" ng-model="infoUser.diaChi" name="address" placeholder="Địa chỉ giao hàng" required>
+                        <input type="tel" id="phoneShip" ng-model="infoUser.soDienThoai" name="phone" placeholder="Số điện thoại" required>
+                    </form>
+                    
+                    <a href="" id="clickChangeInfoShip" style="color: blue; text-decoration: underline;">Thay đổi địa chỉ</a>
+                    <div id="changeinfoship" style="display: none;" >
+                        
+                    </div>
+                </div>
+                
+                <div id="content-right">
+                    <h2>ĐƠN HÀNG CỦA BẠN</h2>
+                    <table class="tableOrder">
+                        <thead>
+                            <tr>
+                                <th>SẢN PHẨM</th>
+                                <th>SỐ LƯỢNG</th>
+                                <th>TỔNG</th>
+                            </tr>
+                        </thead>
+                        <tbody id="order-items">
+                            <!-- Các sản phẩm sẽ được thêm vào đây -->
+                        </tbody>
+                        
+                        <tfoot>
+                            <tr>
+                                <td><strong>Phí giao hàng</strong></td>
+                                <td></td>
+                                <td id="shipping-fee">30,000đ</td>
+                            </tr>
+                            <tr style="border-top: 1px solid #ccc;">
+                                <td><strong>Tổng cộng</strong></td>
+                                <td id="total-quantity">0</td>
+                                <td id="total-price" style="color: red; font-weight: bold;">0đ</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                
+                    <div class="payment-method">
+                        <label>
+                            <input type="radio" name="payment-method" value="cod"> Thanh toán khi nhận hàng
+                        </label>
+                        <label>
+                            <input type="radio" name="payment-method" value="bank-transfer"> Chuyển khoản ngân hàng
+                        </label>
+                        <p>Thực hiện thanh toán vào ngay tài khoản ngân hàng của chúng tôi. Vui lòng sử dụng Mã đơn hàng của bạn trong phần Nội dung thanh toán. Đơn hàng sẽ được giao sau khi tiền đã chuyển.</p>
+                    </div>
+                </div>
+                
+                
+
+            </div>
+        </div>
+        <div id="footer">
+            <div id="footer-container">
+                <div id="footer-info">
+                    <span class="name">LING GLASSES</span>
+                    <div class="activity">
+                        <p><span class="bold">Địa chỉ:</span> Khoái Châu, Hưng Yên</p>
+                        <p><span class="bold">Mon - Sun:</span> 8:00 AM - 9:00 PM </p>
+                        <p><span class="bold">Hotline:</span> 0564105678</p>
+                    </div>
+            
+                    <p>Đăng ký để nhận được thông báo mới nhất</p>
+                    <div class="signup-email">
+                        <input type="text" placeholder="Nhập địa chỉ email tại đây...">
+                        <button type="submit"><i class="far fa-envelope"></i></button>
+                    </div>
+                    <div class="social-network">
+                        <i class="fab fa-facebook"></i>
+                        <i class="fab fa-instagram"></i>
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                </div>
+                <div id="footer-product">
+                    <h3>Sản phẩm</h3>
+                    <ul>
+                        <li><a href="#">Kính cận</a></li>
+                        <li><a href="#">Kính thời trang</a></li>
+                        <li><a href="#">Kính râm</a></li>
+                        <li><a href="#">Phụ kiện</a></li>
+                    </ul>
+                </div>
+                <div id="footer-policy">
+                    <h3>Chính sách</h3>
+                    <ul>
+                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Chính sách bảo hành</a></li>
+                        <li><a href="#">Chính sách giao hàng</a></li>
+                        <li><a href="#">Chính sách bảo mật</a></li>
+                    </ul>
+                </div>
+                <div id="footer-network">
+                    <h3>Hệ thống cửa hàng</h3>
+                    <ul>
+                        <li>Khoái Châu, Hưng Yên</li>
+                        <li>Hoàn Kiếm, Hà Nội</li>
+                        <li>Quận 1, TP. Hồ Chí Minh</li>
+                    </ul>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</body>
+</html>

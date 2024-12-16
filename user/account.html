@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="./css/account.css">
+    <link rel="stylesheet" href="./image/">
+    <link rel="icon" href="logo.png">
+    <script src="./js/jquery-3.7.1.js" type="text/javascript"></script>
+    <script src="./angular/angular.min.js" type="text/javascript"></script>
+    <script src="./angular/gobal.js" type="text/javascript"></script>
+    <script src="./angular/product.js" type="text/javascript"> </script>
+    <script src="./angular/user.js" type="text/javascript"></script>
+    <script src="./angular/category.js" type="text/javascript"></script>
+    <script src="./js/account.js" type="text/javascript"></script>
+    <script src="./js/main.js" type="text/javascript"></script>
+    <script src="./angular/hoadon.js" type="text/javascript"> </script>
+
+    <title>Đồ Án 2</title>
+</head>
+<body ng-app="PageUser" >
+    <div id="wapper">
+        <div id="header" >
+            <div id="header-top"> 
+                <div id="header-top-container">
+                    <div>
+                        <a class="name"><i class="fas fa-glasses"></i>LING GLASSES</a>        
+                    </div> 
+                    <div class="search-box">
+                        <input type="text" placeholder="Tìm kiếm...">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </div> 
+                    <div id="cart-container">
+                        <div id="user-container">                     
+                            <i class="far fa-user"></i>
+                            <p id="userLogin">Tài khoản</br>Đăng nhập/ Đăng ký</p>
+                            <i class="fas fa-sort-down"></i>
+                            <ul id="subnav-user">
+                                <li id="login"><a href=""><i class="fas fa-sign-in-alt"></i> Đăng nhập</a></li>
+                                <li id="register"><a href=""><i class="fas fa-sign-in-alt"></i> Đăng ký</a></li>
+                                <li id="account" style="display: none;"><a href=""><i class="fas fa-user"></i> Tài khoản của tôi</a></li>
+                                <li id="orders" style="display: none;"><a href=""><i class="fas fa-box"></i> Đơn hàng của tôi</a></li>
+                                <li id="logout"><a onclick="Exit()"><i class="fas fa-sign-in-alt"></i> Thoát</a></li>
+                            </ul>
+                        </div>
+                        <div id="cart" ng-controller="ProductCtrl">
+                            <a href="cart.html"> 
+                                <i class="fas fa-cart-plus"></i>
+                                <span class="cart-count">{{cartCount}}</span>
+                            </a>
+                        </div>
+                        <div id="menu-nav" >
+                            <i class="fas fa-bars" onclick="toggleMenu()"></i>
+                        </div>
+                    </div> 
+                </div>
+                
+            </div>
+            <hr size="1" color="#ccc"/>
+            <div id="header-bottom" ng-controller="CategoryCtrl">
+                <div style="width: 90%; margin: 0px auto; display: flex; ">
+                    <ul id="nav">
+                        <li><a href="index.html">TRANG CHỦ</a></li>
+                    </ul>
+                    <ul id="nav" ng-repeat="cate in listCategory">
+                        <li><a ng-click="viewCategory(cate.danhmuc_id)">{{cate.tenDanhMuc}}</a></li>   
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Menu Content Slide-In -->
+            <div id="menu-content">
+                <div class="menu-header">
+                    <p id="userLogin-menunav">Tài khoản</p>
+                    <span class="close-btn" onclick="toggleMenu()">&times;</span>
+                </div>
+                
+                <div class="menu-nav-list">
+                    <ul id="nav">
+                        <li><a href="index.html">TRANG CHỦ</a></li>
+                        <li><a href="category.html">DANH MỤC</a></li>
+                        <li id="login-menunav"><a href="../login/login.html">Đăng nhập</a></li>
+                        <li id="register-menunav"><a href="../login/login.html">Đăng ký</a></li>
+                        <li id="account-menunav" style="display: none;"><a href="account.html">Tài khoản của tôi</a></li>
+                        <li id="orders-menunav" style="display: none;"><a href=""  class="tab" onclick="openTab(event,'order')">Đơn hàng của tôi</a></li>
+                        <li id="logout-menunav"><a onclick="Exit()"><i class="fas fa-sign-in-alt"></i> Thoát</a></li>
+                    </ul>
+                    
+                    <!-- <ul id="nav" ng-repeat="cate in listCategory">
+                        <li><a ng-click="viewCategory(cate.danhmuc_id)"> {{cate.tenDanhMuc}}</a></li>   
+                    </ul> -->
+                </div>
+            </div>
+
+            <!-- Overlay -->
+            <div id="overlay" onclick="toggleMenu()"></div>
+            
+        </div>
+        <div id="content" ng-controller="UserCtrl">
+            <div id="content-container">
+                <div id="content-left">
+                    <div class="review-account">
+                        <img src="{{'http://localhost:44364/api/BaiViet/get-img/' + infoUser.image}}" alt=""/>
+                        <p >
+                            {{infoUser.tenNguoiDung}}
+                            </br><a href=""><i class="fas fa-user-edit"></i> Sửa hồ sơ</a>
+                        </p>
+                    </div> 
+                    <ul id="tabcontrol">
+                        <li class="tab active" onclick="openTab(event,'account-user')" ><i class="fas fa-user"></i> Tài khoản của tôi</li>
+                        <li class="tab" onclick="openTab(event,'order')" ><i class="fas fa-box"></i> Đơn mua</li>
+                    </ul>
+                </div>
+                <div id="content-right">
+                    <div id="account-user" class="content active" style="background-color: #f5f5f5;" >
+                        <h2>Hồ Sơ Của Tôi</h2>
+                        <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
+                        <hr size="1" color="#ccc">
+                        <div id="container-account">
+                            <div id="detail-user">
+                                <div class="form-group">
+                                    <label for="username">Tên đăng nhập</label>
+                                    <input type="text" id="username" ng-model="infoUser.tenTaiKhoan" disabled>
+                                </div>
+                    
+                                <div class="form-group">
+                                    <label for="name">Tên</label>
+                                    <input type="text" id="name" placeholder="Nhập tên của bạn" ng-model="infoUser.tenNguoiDung">
+                                </div>
+                    
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" placeholder="Nhập email" ng-model="infoUser.email">
+                                </div>
+                    
+                                <div class="form-group">
+                                    <label for="phone">Số điện thoại</label>
+                                    <input type="text" id="phone" ng-model="infoUser.soDienThoai" >
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="address">Địa chỉ</label>
+                                    <input type="text" id="address" ng-model="infoUser.diaChi" >
+                                </div>
+                                
+                                <div class="form-group" id ="passwordUser">
+                                    <label for="password">Mật khẩu</label>
+                                    <input type="password" id="password" ng-model="infoUser.matKhau" >
+                                    <div id="eye">
+                                        <i class="far fa-eye"></i>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="gender">Giới tính</label>
+                                    <div class="radio-group">
+                                        <input type="radio" id="male" name="gender" value="Nam">
+                                        <label for="male">Nam</label>
+                                        <input type="radio" id="female" name="gender" value="Nữ">
+                                        <label for="female">Nữ</label>
+                                        <input type="radio" id="other" name="gender" value="Khác">
+                                        <label for="other">Khác</label>
+                                    </div>
+                                </div>
+                    
+                                <div class="form-group">
+                                    <label for="dob">Ngày đăng ký</label>
+                                    <!-- <input type="date" id="date" ng-model="infoUser.ngayDangKy | date: 'dd/MM/yyyy" disabled> -->
+                                    <input type="text" id="date" ng-model="infoUser.ngayDangKy | date: 'dd/MM/yyyy'" disabled>
+                                </div>
+                            </div>
+                            <div class="preview-image">
+                                <img ng-src="{{previewImage || 'http://localhost:44364/api/BaiViet/get-img/' + infoUser.image}}" alt=""/>
+                                <input type="file" id="file" value="{{infoUser.image}}" accept="image/*"  onchange="angular.element(this).scope().onFileSelected(event)">
+                                <p>Dung lượng file tối đa 1 MB, Định dạng: .JPEG, .PNG</p>
+                            </div>
+                        </div>
+                        <button class="btn-save" ng-click="saveUser()">Lưu</button>
+                    </div>
+                    <div id="order" class="content" ng-controller="OrderCtrl">
+                        <!-- Tab Order Controller -->
+                        <div id="orders-container">
+                            <!-- Tab Header -->
+                            <ul id="tab-orders">
+                                <li class="tab-order" ng-repeat="tab in orderTabs" ng-class="{active: selectedTab === tab}">
+                                    <a href="#" ng-click="selectTab(tab)">{{ tab }}</a>
+                                </li>
+                            </ul>
+
+                            <!-- Content tab order -->
+                            <div id="all-order" class="content-order">
+                                <!-- Search arrange-->
+                                <div id="search-control" >
+                                    <div class="search-container">
+                                        <i class="fas fa-search search-icon"></i>
+                                        <input type="text" class="search-input" placeholder="Tìm kiếm...">
+                                    </div>
+                                </div>
+
+                                <!-- List order -->
+                                <div ng-repeat="order in groupedOrders[selectedTab]" 
+                                    ng-show="groupedOrders[selectedTab].length > 0" 
+                                    class="order-group"
+                                    ng-click="openMyOrderDetail(order)">
+                                    <div class="order-header">
+                                        <span style="font-weight: normal; color: rgb(14, 93, 129)">Mã đơn hàng: {{order.donhangban_id}}</span>
+                                        <span>{{order.trangThaiDonHang}}</span>
+                                    </div>
+                                    <div class="order-item" ng-repeat="detail in order.listChiTietDH">
+                                        <img 
+                                            ng-src="{{'http://localhost:44364/api/BaiViet/get-img/' + detail.infoProductByOption.imageCon || './image/default_product.jpg'}}" 
+                                            alt="" 
+                                            class="product-image" 
+                                        />
+                                        <div class="product-details">
+                                            <h4>{{detail.infoProductByOption.tenKinhMat}}</h4>
+                                            <p class="product-classify">
+                                                Phân loại hàng: {{detail.infoProductByOption.mauSac}}, 
+                                                {{detail.infoProductByOption.doCan}}
+                                            </p>
+                                            <p class="product-quantity">x{{detail.soLuong}}</p>
+                                        </div>
+                                        <div class="product-price">
+                                            <p class="original-price" ng-if="detail.infoProductByOption.giaCu">
+                                                {{detail.infoProductByOption.giaCu | currency : 'đ'}}
+                                            </p>
+                                            <p class="discount-price">
+                                                {{detail.infoProductByOption.giaBan | number: 0}}đ
+                                            </p>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="total-summary" >
+                                        <span>Ngày đặt: {{order.ngayBan | date:'dd/MM/yyyy'}}</span>
+                                        <div>
+                                            <p>Phí ship: </p>
+                                            <p>Tổng: {{calculateOrderTotal(order) | number: 0}}đ</p>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="popup-orderDetail" ng-show="isOrderDetailOpen" class="overlay">
+                            <div id="popup-order-container">
+                                <h2>THÔNG TIN CHI TIẾT ĐƠN HÀNG</h2>
+                                <div id="address-ship">
+                                    <div class="status-selectedOrder">
+                                        Đơn hàng của bạn {{selectedOrder.trangThaiDonHang}}
+                                    </div>
+                                    <div class="address-ship">
+                                        <p><i class="fas fa-map-marker-alt"></i>
+                                            {{infoUser.tenNguoiDung}} <span>| {{infoUser.soDienThoai}}</span></p>
+                                        <p>    {{infoUser.diaChi}}</p>
+                                    </div>
+                                </div>
+                                <div id="myorderDetail">
+                                    <span><i class="fas fa-store"></i> Ling Glasses Shop</span>
+                                    <div class="order-item" ng-repeat="detail in selectedOrder.listChiTietDH">
+                                        <img 
+                                            ng-src="{{'http://localhost:44364/api/BaiViet/get-img/' + detail.infoProductByOption.imageCon || './image/default_product.jpg'}}" 
+                                            alt="" 
+                                            class="product-image" 
+                                        />
+                                        <div class="product-details">
+                                            <h4>{{detail.infoProductByOption.tenKinhMat}}</h4>
+                                            <p class="product-classify">
+                                                Phân loại hàng: {{detail.infoProductByOption.mauSac}}, 
+                                                {{detail.infoProductByOption.doCan}}
+                                            </p>
+                                            <p class="product-quantity">x{{detail.soLuong}}</p>
+                                        </div>
+                                        <div class="product-price">
+                                            <p class="original-price" ng-if="detail.infoProductByOption.giaCu">
+                                                {{detail.infoProductByOption.giaCu | number: 0}}đ
+                                            </p>
+                                            <p class="discount-price">
+                                                {{detail.infoProductByOption.giaBan | number: 0}}đ
+                                            </p>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="total-summary" >
+                                        <span>Ngày đặt: {{selectedOrder.ngayBan | date:'dd/MM/yyyy'}}</span>
+                                        <p>Tổng: {{calculateOrderTotal(selectedOrder) | number: 0}}đ</p>
+                                    </div>
+                                </div>
+                                <div id="actions">
+                                    <button class="btn-exit" ng-click="closeMyOrderDetail()">Thoát</button>
+                                    <button class="btn-acceptOrder" disabled>Xác Nhận đơn hàng</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div id="footer">
+            <div id="footer-container">
+                <div id="footer-info">
+                    <span class="name">LING GLASSES</span>
+                    <div class="activity">
+                        <p><span class="bold">Địa chỉ:</span> Khoái Châu, Hưng Yên</p>
+                        <p><span class="bold">Mon - Sun:</span> 8:00 AM - 9:00 PM </p>
+                        <p><span class="bold">Hotline:</span> 0564105678</p>
+                    </div>
+            
+                    <p>Đăng ký để nhận được thông báo mới nhất</p>
+                    <div class="signup-email">
+                        <input type="text" placeholder="Nhập địa chỉ email tại đây...">
+                        <button type="submit"><i class="far fa-envelope"></i></button>
+                    </div>
+                    <div class="social-network">
+                        <i class="fab fa-facebook"></i>
+                        <i class="fab fa-instagram"></i>
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                </div>
+                <div id="footer-product">
+                    <h3>Sản phẩm</h3>
+                    <ul>
+                        <li><a href="#">Kính cận</a></li>
+                        <li><a href="#">Kính thời trang</a></li>
+                        <li><a href="#">Kính râm</a></li>
+                        <li><a href="#">Phụ kiện</a></li>
+                    </ul>
+                </div>
+                <div id="footer-policy">
+                    <h3>Chính sách</h3>
+                    <ul>
+                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Chính sách bảo hành</a></li>
+                        <li><a href="#">Chính sách giao hàng</a></li>
+                        <li><a href="#">Chính sách bảo mật</a></li>
+                    </ul>
+                </div>
+                <div id="footer-network">
+                    <h3>Hệ thống cửa hàng</h3>
+                    <ul>
+                        <li>Khoái Châu, Hưng Yên</li>
+                        <li>Hoàn Kiếm, Hà Nội</li>
+                        <li>Quận 1, TP. Hồ Chí Minh</li>
+                    </ul>
+                </div>
+            </div>  
+        </div>
+    </div>
+</body>
+</html>

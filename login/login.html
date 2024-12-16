@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="login.css">
+    <!-- <link rel="stylesheet" href="./image/"> -->
+    <link rel="icon" href="logo.png">
+    <script src="jquery-3.7.1.js" type="text/javascript"></script> 
+    <script src="../admin/angular/angular.min.js"></script>
+    <!-- <script src="../user/angular/gobal.js"></script> -->
+    <!-- <script src="./angular/login.js"></script> -->
+    <script src="login.js"></script>
+    <title>Đồ Án 2</title>
+</head>
+<body >
+    <div id="wapper">
+        <div id="header">
+            <div id="header-container">
+                <div>
+                    <a class="name"><i class="fas fa-glasses"></i>LING GLASSES</a>        
+                </div> 
+                <div>
+                    <ul id="item">
+                        <li><a href="../user/index.html">Trang chủ</a></li>
+                        <li><a href="">Hệ thống</a></li>
+                        <li><a href="">Liên hệ</a></li>
+                    </ul>
+                </div>
+            </div>
+   
+        </div>
+        <div id="content" >
+            <div class="container">           
+                <div class="form-box">
+                    <!-- Form đăng nhập -->
+                    <form action="" id="form-login" class="active" >
+                        <h1 class="form-heading">ĐĂNG NHẬP</h1>
+                        <div class="form-group">
+                            <input type="text" id="userLogin" class="form-input" placeholder="Tên đăng nhập">
+                            <div id="usernameError" class="error">Tên không được để trống</div>                
+                        </div>
+                        <div class="form-group" id="passLogin">
+                            <input type="password" id="passwordLogin" class="form-input" placeholder="Mật khẩu">
+                            <div id="eye">
+                                <i class="far fa-eye"></i>
+                            </div>
+                            <div id="passwordError" class="error">Tên không được để trống</div>                
+                        </div>
+                        <a href="#" class="forget">Quên mật khẩu?</a>
+                        <button type="button" class="form-submit" id="btn-Submit" onclick="Login()" >Đăng nhập</button>   
+                        <p>Bạn mới biết đến Ling Glasses? <a href="#" class="signup-link">Đăng ký ngay</a></p>
+                    </form>
+                
+                    <!-- Form đăng ký -->
+                    <form action="" id="form-signup" >
+                        <h1 class="form-heading">ĐĂNG KÝ</h1>
+                        <div class="form-group">
+                            <input type="text" id="username" class="form-input" placeholder="Tên đăng nhập">
+                            <div id="usernameError" class="error">Tên không được để trống</div>                
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" class="form-input email-check" placeholder="Email">
+                            <div id="emailError" class="error">Email không được để trống</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="password" id="password" class="form-input" placeholder="Mật khẩu">
+                            <div id="passwordError" class="error">Password không được để trống</div>
+                        </div>
+                        
+                        <button type="submit" class="form-submit" onclick="SignUp()">Đăng ký</button>
+                        <p>Đã có tài khoản? <a href="#" class="login-link">Đăng nhập ngay</a></p>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+            
+    </div>
+</body>
+</html>

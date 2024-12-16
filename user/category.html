@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="../user/css/category.css">
+    <link rel="stylesheet" href="../user/image/">
+    <link rel="icon" href="logo.png">
+    <script src="./js/jquery-3.7.1.js" type="text/javascript"></script> 
+    <script src="./js/category.js" type="text/javascript"></script>
+    <script src="./angular/angular.min.js" type="text/javascript"></script>
+    <script src="./angular/gobal.js" type="text/javascript"></script>
+    <script src="./angular/product.js" type="text/javascript"></script>
+    <script src="./angular/category.js" type="text/javascript"></script>
+    <title>Đồ Án 2</title>
+</head>
+<body ng-app="PageUser" ng-controller="CategoryCtrl">
+    <div id="wapper">
+        <div id="header">
+            <div id="header-top"> 
+                <!-- Tên shop -->
+                <div>
+                    <a class="name"><i class="fas fa-glasses"></i>LING GLASSES</a>        
+                </div> 
+
+                <!-- Tìm kiếm -->
+                <div class="search-box">
+                    <input type="text" placeholder="Tìm kiếm...">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </div> 
+                <div id="cart-container">
+                    <div id="user-container" >                     
+                        <i class="far fa-user"></i>
+                        <p id="userLogin">Tài khoản</br>Đăng nhập/ Đăng ký</p>
+                        <i class="fas fa-sort-down"></i>
+                        <ul id="subnav-user">
+                            <li id="login"><a href="../login/login.html"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a></li>
+                            <li id="register"><a href="../login/login.html"><i class="fas fa-sign-in-alt"></i> Đăng ký</a></li>
+                            <li id="account" style="display: none;"><a href="account.html"><i class="fas fa-user"></i> Tài khoản của tôi</a></li>
+                            <li id="orders" style="display: none;"><a href=""><i class="fas fa-box"></i> Đơn hàng của tôi</a></li>
+                            <li id="logout"><a onclick="Exit()"><i class="fas fa-sign-in-alt"></i> Thoát</a></li>
+                        </ul>
+                    </div>
+                    <div id="cart" ng-controller="ProductCtrl">
+                        <a href="cart.html"> 
+                            <i class="fas fa-cart-plus"></i>
+                            <span class="cart-count">{{cartCount}}</span>
+                        </a>
+                    </div>                       
+                </div> 
+            </div>
+            <hr size="1" color="#ccc"/>
+            
+        </div>
+        <div id="content">
+            <!-- Địa chỉ trang -->
+            <div id="address-page">
+                <div class="breadcrumb">
+                    <a href="index.html">Trang chủ</a> &gt; 
+                    <a href="category.html">Danh mục</a>
+                </div>  
+            </div>
+                      
+            <div id="content-container">
+                <!-- Các thương hiệu -->
+                <div id="brand">
+                    <img src="./image/brandGentleMonster.jpg" alt="">
+                    <img src="./image/brandChannel.jpg" alt="">
+                    <img src="./image/brandGucci.jpg" alt="">
+                    <img src="./image/brandMolsion.png" alt="">
+                    <img src="./image/brandPrada.jpg" alt="">
+                    <img src="./image/brandYSL.jpg" alt="">
+                    <img src="./image/brandYSL.jpg" alt="">
+                    <img src="./image/brandYSL.jpg" alt="">
+                </div>
+                <div id="content-bottom-container">
+                    <!-- Danh mục -->
+                    <div id="content-left">
+                        <div id="section-1">
+                            <div class="title" id="title-1">
+                                <span class="name-group">DANH MỤC</span>
+                                <i class="fas fa-minus"></i>
+                            </div>
+                            <div class="group" id="group-1" >
+                                <ul id="group-list" ng-repeat="name in listCategory">
+                                    <li ng-click="viewCategory(name.danhmuc_id)">{{name.tenDanhMuc}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="section-2">
+                            <div class="title" id="title-2">
+                                <span class="name-group">CHẤT LIỆU</span>
+                                <i class="fas fa-minus"></i>
+                            </div>
+                            <div class="group" id="group-2">
+                                <ul id="group-list" ng-repeat="material in Material()">
+                                    <li>{{material}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="section-3">
+                            <div class="title" id="title-3">
+                                <span class="name-group">HÌNH DÁNG</span>
+                                <i class="fas fa-minus"></i>
+                            </div>
+                            <div class="group" id="group-3">
+                                <ul id="group-list" ng-repeat="shape in Shape()">
+                                    <li>{{shape}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Danh sách sản phẩm -->
+                    <div id="content-right">
+                        <div id="arrange">
+                            <p>Sắp xếp: </p>
+                                <button ng-click="sortAndPaginateProducts('all')">Tất cả</button>
+                                <button ng-click="sortAndPaginateProducts('newest')">Mới nhất</button>
+                                <button ng-click="sortAndPaginateProducts('priceAsc')">Giá thấp - cao</button>
+                                <button ng-click="sortAndPaginateProducts('priceDesc')">Giá cao - thấp</button>
+                        </div>
+                        
+                        <div id="list-product"  class="ng-scope" ng-controller="ProductCtrl"> 
+                            <div class="product-item" ng-repeat="product in sortedAndPaginatedProducts" ng-click="viewDetail(product.kinhmat_id)">
+                                <img class="pro-item-img" ng-src="{{'http://localhost:44364/api/BaiViet/get-img/' + product.image}}"/>
+                                <span class="pro-item-name">{{product.tenKinhMat}}</span>
+                                <div class="pro-item-price">
+                                    <span class="pro-item-price-old"><s>450.000đ</s></span>
+                                    <span class="pro-item-price-new">{{product.listThuocTinh[0].giaBan | number: 0}}đ</span>
+                                </div>
+                            </div>
+                            
+                            <div ng-if="listProductFromCate.listKinhMat.length === 0">
+                                <span>Không có sản phẩm nào!</span>
+                            </div>
+                        </div>
+                        <div class="pagination-container">
+                            <button class="pagination-button" ng-click="setPage(currentPage - 1)" ng-disabled="currentPage === 1">Trước</button>
+                            <span class="pagination-info"> {{ currentPage }} / {{ totalPages }}</span>
+                            <button class="pagination-button" ng-click="setPage(currentPage + 1)" ng-disabled="currentPage === totalPages">Tiếp</button>
+                        </div>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+        
+        <div id="footer">
+            <div id="footer-container">
+                <div id="footer-info">
+                    <span class="name">LING GLASSES</span>
+                    <div class="activity">
+                        <p><span class="bold">Địa chỉ:</span> Khoái Châu, Hưng Yên</p>
+                        <p><span class="bold">Mon - Sun:</span> 8:00 AM - 9:00 PM </p>
+                        <p><span class="bold">Hotline:</span> 0564105678</p>
+                    </div>
+
+                    <p>Đăng ký để nhận được thông báo mới nhất</p>
+                    <div class="singup-email">
+                        <input type="text" placeholder="Nhập địa chỉ email tại đây..."></input>
+                        <button type="submit"><i class="far fa-envelope"></i></button>
+                    </div>
+                    <div class="social-network">
+                        <i class="fab fa-facebook"></i>
+                        <i class="fab fa-instagram"></i>
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+
+                </div>
+                <div id="footer-address">
+
+                </div>
+                <div id="footer-policy">
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>

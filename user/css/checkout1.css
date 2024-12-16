@@ -1,0 +1,440 @@
+/* Reset và cơ bản */
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing:  border-box;
+}
+
+body{
+	margin: 0px 0px;
+	width: 100%
+}
+html{
+    font-family:Arial, Helvetica, sans-serif;
+}
+:root{
+    --main-background: #A9141E;
+    --main-color: #f8f8f8
+}
+a{
+    text-decoration: none;
+    color: #333;
+}
+#wapper{
+    width: 100%;
+    margin: 0px auto;
+}
+#header{
+    width: 100%;
+    height: max-content;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+    background-color: var(--main-background);
+}
+
+#header-top{
+    width: 100%;
+}
+
+#header-top-container{
+    width: 90%;
+    height: 60px;
+    margin: 0px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--main-color);
+}
+
+.name{
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: var(--main-color);
+    font-size: 30px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    width: 500px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.search-box input {
+    border: none;
+    padding: 10px;
+    flex: 1;
+    outline: none;
+    background: #f5f2f2;
+}
+
+.search-box button {
+    background: #bbb;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+
+.fa-user{
+    font-size: 22px;
+}
+
+#user-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+#subnav-user {
+    display: none;
+    position: absolute;
+    width: 180px;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+#user-container:hover #subnav-user {
+    display: block;
+    cursor: pointer;
+}
+
+#subnav-user li {
+    list-style: none;
+}
+
+#subnav-user li a {
+    display: block;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: black;
+}
+
+#subnav-user li a:hover {
+    background-color: #ddd;
+}
+
+/* Định dạng cho phần giỏ hàng */
+#cart {
+    position: relative;
+}
+/* Biểu tượng giỏ hàng */
+.fa-cart-plus {
+    font-size: 24px;
+    position: relative;
+    color: var(--main-color);
+}
+/* Số gắn trên biểu tượng giỏ hàng */
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ccc;
+    color: #333;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 10px;
+}
+#cart-container{
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: flex-end;
+    color: #333;
+    font-size: 14px;
+    color: var(--main-color);
+}
+
+
+/* CONTENT */
+#content{
+    width: 100%;
+    min-height: 1000px;
+    margin: 0px auto;
+}
+
+#content-container{
+    width: 100%;
+}
+
+#content-top .image-container {
+    position: relative; /* Đặt position relative cho phần tử chứa */
+    display: inline-block; /* Đảm bảo kích thước phù hợp với ảnh */
+    width: 100%;
+}
+
+#content-top img {
+    width: 100%; /* Đảm bảo hình ảnh phủ hết container */
+    height: 100px; /* Giữ tỷ lệ của hình ảnh */
+    object-fit: cover;
+    display: block; /* Đảm bảo không có khoảng trống dưới hình ảnh */
+}
+
+#content-top .image-container span {
+    position: absolute; /* Đặt chữ lên trên hình ảnh */
+    top: 50%; /* Căn giữa theo chiều dọc */
+    left: 50%; /* Căn giữa theo chiều ngang */
+    transform: translate(-50%, -50%); /* Căn chính xác vào giữa */
+    font-size: 2rem; /* Kích thước chữ */
+    color: rgb(250, 250, 250); /* Màu chữ */
+    font-weight: bold; /* Đậm chữ */
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Thêm bóng chữ */
+    z-index: 1; /* Đặt chữ lên trên lớp phủ */
+}
+
+/* Lớp phủ mờ chỉ cho hình ảnh */
+#content-top .image-container::after {
+    content: ''; /* Tạo lớp phủ */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(36, 36, 36, 0.5); /* Lớp phủ màu đen với độ mờ */
+    z-index: 0; /* Đặt lớp phủ phía dưới chữ */
+}
+
+#main-content{
+    width: 60%;
+    margin: 20px auto;
+}
+
+#address-ship{
+    padding: 10px;
+    background-color: #f3f2b4;
+    border-radius: 10px;
+}
+.status-selectedOrder{
+    width: 100%;
+    color: #fff;
+    background-color: rgb(44, 167, 95);
+    padding: 10px;
+}
+.address-ship{
+    margin-top: 10px;
+    color: #333;
+    font-size: 14px;
+    border-bottom: 1px solid #ccc;
+}
+
+#myorderDetail{
+    padding: 10px;
+}
+
+#myorderDetail span{
+    font-weight: bold;
+}
+
+#actions{
+    margin-top: 10px;
+    text-align: right;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+#actions button{
+    padding: 8px;
+    border-radius: 5px;
+}
+.btn-exit{
+    width: 48%;
+    border: 1px solid #ccc;
+    color: #555
+}
+.btn-exit:hover{
+    background-color: #ccc;
+}
+.btn-acceptOrder{
+    width: 48%;
+    border: none;
+    background-color: var(--main-background);
+    color: #fff;
+}
+.btn-acceptOrder:hover{
+    background-color: #ffa1a8c9;
+}
+
+.order-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 10px;
+}
+
+.product-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 15px;
+}
+
+.product-details {
+    flex-grow: 1;
+    font-size: 14px;
+    color: #333;
+}
+
+.product-details h4 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 0 5px;
+}
+
+.product-classify {
+    color: #888;
+    margin: 0 0 5px;
+}
+
+.product-quantity {
+    font-weight: bold;
+    color: #666;
+}
+
+.product-price {
+    text-align: right;
+    margin-right: 20px;
+    font-size: 14px;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #aaa;
+    margin: 0;
+}
+
+.discount-price {
+    color: #d0021b;
+    margin: 0;
+}
+
+.product-total {
+    font-size: 14px;
+    color: #d0021b;
+    text-align: right;
+}
+
+.total-summary{
+    display: flex;
+    justify-content: space-between;
+}
+
+.total-summary label{
+    color: #d0021b;
+    font-weight: bold;
+    font-size: 16px;
+}
+.total-summary span{
+    color: #555;
+    font-size: 13px;
+}
+
+.total p {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.total p label{
+    padding-left: 20px;
+}
+
+#footer-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    background-color: #333;
+    color: #fff;
+    font-size: 14px;
+}
+#footer-info{
+    width: 30%;
+}
+
+/* Footer Info */
+#footer-info .name {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    display: block;
+}
+
+#footer-info .activity p {
+    margin: 5px 0;
+}
+
+.signup-email {
+    margin-top: 10px;
+    display: flex;
+}
+
+.signup-email input {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 5px 0 0 5px;
+}
+
+.signup-email button {
+    padding: 8px;
+    border: none;
+    background-color: #A9141E;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 0 5px 5px 0;
+}
+
+.signup-email button i {
+    font-size: 1.2em;
+}
+
+.social-network i {
+    font-size: 1.5em;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: color 0.3s;
+    padding-top: 10px;
+}
+
+.social-network i:hover {
+    color: #A9141E;
+}
+
+/* Footer Product, Policy, and Network */
+#footer-product, #footer-policy, #footer-network {
+    text-align: left;
+}
+
+#footer-product h3, #footer-policy h3, #footer-network h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+#footer-product ul, #footer-policy ul, #footer-network ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#footer-product li, #footer-policy li, #footer-network li {
+    margin: 5px 0;
+}
+
+#footer-product a, #footer-policy a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+#footer-product a:hover, #footer-policy a:hover {
+    color: #A9141E;
+}

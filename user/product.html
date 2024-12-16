@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="../user/css/product.css">
+    <link rel="stylesheet" href="../user/image/">
+    <link rel="icon" href="logo.png">
+    <script src="./js/jquery-3.7.1.js" type="text/javascript"></script>
+    <script src="./js/product.js" type="text/javascript"></script>
+    <script src="./angular/angular.min.js" type="text/javascript"></script>
+    <script src="./angular/gobal.js" type="text/javascript"></script>
+    <script src="./angular/product.js" type="text/javascript"></script>
+    <script src="./angular/product.js" type="text/javascript"></script>
+    <script src="./angular/access.js" type="text/javascript"></script>
+    
+    <title>Đồ Án 2</title>
+</head>
+<body ng-app="PageUser" ng-controller="ProductCtrl">
+    
+    <div id="wapper">
+        <div id="header">
+            <div id="header-top"> 
+                <!-- Tên shop -->
+                <div>
+                    <a class="name"><i class="fas fa-glasses"></i>LING GLASSES</a>        
+                </div> 
+
+                <!-- Tìm kiếm -->
+                <div class="search-box">
+                    <input type="text" placeholder="Tìm kiếm...">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </div> 
+                <div id="cart-container">
+                    <div id="user-container" >                     
+                        <i class="far fa-user"></i>
+                        <p id="userLogin">Tài khoản</br>Đăng nhập/ Đăng ký</p>
+                        <i class="fas fa-sort-down"></i>
+                        <ul id="subnav-user">
+                            <li id="login"><a href="../login/login.html"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a></li>
+                            <li id="register"><a href="../login/login.html"><i class="fas fa-sign-in-alt"></i> Đăng ký</a></li>
+                            <li id="account" style="display: none;"><a href="account.html"><i class="fas fa-user"></i> Tài khoản của tôi</a></li>
+                            <li id="orders" style="display: none;"><a href=""><i class="fas fa-box"></i> Đơn hàng của tôi</a></li>
+                            <li id="logout"><a onclick="Exit()"><i class="fas fa-sign-in-alt"></i> Thoát</a></li>
+                        </ul>
+                    </div>
+                    <div id="cart" ng-controller="ProductCtrl">
+                        <a href="cart.html"> 
+                            <i class="fas fa-cart-plus"></i>
+                            <span class="cart-count">{{cartCount}}</span>
+                        </a>
+                    </div>                       
+                </div> 
+            </div>
+            <hr size="1" color="#ccc"/>
+            
+        </div>
+        <div id="content" ng-if="product">
+            <!-- Địa chỉ trang -->
+            <div id="address-page">
+                <div class="breadcrumb">
+                    <a href="index.html">Trang chủ</a> &gt; 
+                    <a href="product.html/{{product.kinhmat_id}}">{{product.tenKinhMat}}</a>
+                    <!-- <span>{{productName}}</span> -->
+                </div>  
+            </div>
+            <div id="content-container">
+                <div id="content-product" >
+                    <div id="product-image">
+                        <!-- Hình ảnh chính -->
+                        <div id="image-large">
+                            <img ng-src="{{ selectedDetails.imageCon ? 'http://localhost:44364/api/BaiViet/get-img/' + selectedDetails.imageCon : 'http://localhost:44364/api/BaiViet/get-img/' + product.image  }}" />
+                        </div>
+                    </div>
+                
+                    <div id="product-info">
+                        <!-- Tên sản phẩm -->
+                        <span class="product-name">{{product.tenKinhMat}}</span>
+                    
+                        <!-- Đánh giá sản phẩm -->
+                        <div id="assess">
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span>0 đánh giá | Mã sản phẩm: <i>{{product.kinhmat_id}}</i></span>
+                        </div>
+                    
+                        <!-- Giá sản phẩm -->
+                        <div id="price-section">
+                            <p><span class="product-price-new">{{selectedDetails.giaBan - (selectedDetails.giaBan*selectedDetails.phanTramGiam/100) || product.listThuocTinh[0].giaBan | number: 0}}đ</span> <i>(Đã bao gồm phí VAT)</i></p>
+                            <p class="discount-section">
+                                <span class="sale">{{selectedDetails.phanTramGiam}}%</span>
+                                <span class="save">Tiết kiệm: {{selectedDetails.giaBan*selectedDetails.phanTramGiam/100 | number: 0}}đ</span>
+                            </p>
+                        </div>
+
+                        <!-- Loại kính cận -->
+                        <div class="prescription-options">
+                            <label class="bold">Độ cận: </label>
+                            <div class="container-button">
+                                <button 
+                                    ng-repeat="pres in uniquePrescriptions" 
+                                    ng-if="pres" 
+                                    ng-class="{'selected': selectedPrescription === pres}" 
+                                    ng-click="selectPrescriptionCate(pres)">
+                                    {{pres || 'Không có'}}
+                                </button>
+                            </div>
+                            
+                        </div>
+                    
+                        <!-- Tùy chọn màu sắc -->
+                        <div class="color-options">
+                            <span class="bold">Màu sắc: </span>
+                            <div class="container-button">
+                                <button
+                                    ng-repeat="color in uniqueColors"
+                                    ng-class="{'selected': selectedColor === color}" 
+                                    ng-click="selectColorCate(color)">
+                                    {{color}}
+                                </button>
+                            </div>
+                        </div>
+                    
+                        <!-- Chất liệu sản phẩm -->
+                        <p><span class="bold">Chất liệu:</span>{{product.chatLieu}}</p>
+                    
+                        <!-- Chọn số lượng -->
+                        <div id="quantity-section">
+                            <span class="bold">Số lượng:</span>
+                            <div class="quantity-controls">
+                                <button id="decrease" class="quantity-btn" onclick="handleDecreaseClick()">-</button>
+                                <span id="quantity-value" class="quantity-display" max-value="{{selectedDetails.soLuong}}" ng-model="soluongDetail">1</span>
+                                <button id="increase" class="quantity-btn" onclick="handleIncreaseClick()">+</button>
+                            </div>
+                        </div>
+                        <div style="color: #555; font-size: 13px;">*Mẫu kính này còn lại {{selectedDetails.soLuong || product.listThuocTinh[0].soLuong}} sản phẩm</div>
+                    
+                        <!-- Thông tin miễn phí giao hàng và đổi hàng -->
+                        <div id="shipping-return-section">
+                            <div id="freeship-container">
+                                <img class="freeship" src="./image/freeship.png" alt="Miễn phí ship" />
+                                <p>Miễn phí ship cho đơn hàng từ 400.000đ</p>
+                            </div>
+                            <div id="change-container">
+                                <img class="freeship" src="./image/freeship.png" alt="Đổi hàng miễn phí" />
+                                <p>Đổi hàng miễn phí trong vòng 7 ngày</p>
+                            </div>
+                        </div>
+                    
+                        <!-- Các nút hành động -->
+                        <div class="action-buttons">
+                            <button class="add-cart" ng-click="addToCartFromDetail()">Thêm vào giỏ hàng</button>
+                            <button class="buy-now"  ng-click="addToCheckout()">Mua ngay</button>
+                        </div>
+                    </div>
+                    <div ng-if="!product">
+                        <p>Không tìm thấy sản phẩm!</p>
+                    </div>
+                </div>
+                
+                <!-- Thông tin chi tiết sản phẩm -->
+                <div id="product-detail">
+                    <div id="product-detail-left">
+                        <div id="pdleft-top">
+                            <h2>CHI TIẾT SẢN PHẨM</h2>
+                            <div id="detail-info">
+                                <table>
+                                    <tr>
+                                        <td>Danh mục</td>
+                                        <td>{{product.tenDanhMuc}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kho</td>
+                                        <td>{{total}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Thương hiệu</td>
+                                        <td>{{product.thuongHieu}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Chất liệu</td>
+                                        <td>{{product.chatLieu}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hình dạng</td>
+                                        <td>Vuông bo tròn</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <h2>MÔ TẢ SẢN PHẨM</h2>
+                            <div id="describe">
+                                <p>* Kính mắt Ling Glasses cam kết 100% sản phẩm là ảnh thật shop tự chụp, quý khách hoàn toàn yên tâm khi mua và sử dụng sản phẩm. </p>
+                                <p>* Thời gian ship chỉ từ 1-2 ngày (Hn/Hcm); các khu vực khác 3-4 ngày.</p>
+                                <p>* Bộ sản phẩm Kính mắt Ling Glasses gồm:</br>
+                                    + Hộp đựng kính mắt Ling Glasses.</br>
+                                    + Khăn lau kính mắt.</br>
+                                    + Nước lau kính.
+                                </p>
+                                <p>- Chân gọng kính làm từ nhựa dẻo, giúp mang gọng kính trong thời gian dài cũng không gây khó chịu hay đau ở vành tai.</p>
+                                <p>- Mắt kính theo gọng là mắt kính 0 độ các bạn có thể mang giả cận, chống bụi và lắp mắt kính cận.</p>
+                                <p>- Giá sản phẩm chưa bao gồm dịch vụ cắt mắt kính cận.</p>
+                                <p>- Chốt gọng chắc chắn giúp giữ form kính mắt tốt.</p>
+                                <p>- Gọng kính được thiết kế thời trang phù hợp cho cả nam và nữ.</p>
+                                <p>- Các gọng KÍNH MÁT được phủ lớp chống UV400.</p>
+                                <img src="./image/dichvu.jpg" alt="">
+                                <p>* LƯU Ý KHI ĐẶT MẮT KÍNH CẬN LOẠN TẠI KÍNH MẮT LILY (Chat với Kính mắt Lily nếu bạn có bất kỳ thắc mắc nào)
+                                    KÍNH MẮT LILY xin phép chỉ nhận độ mắt sau để đảm bảo chất lượng sản phẩm mắt kính.</br>
+                                    - Độ Cận : 0 - 6 diop. </br>
+                                    - Độ Loạn : 0 - 2 diop. Với Mắt Đổi Màu 0 - 1,5 diop (Cần cung cấp SỐ TRỤC hoặc GIẤY,SỔ ĐO KHÁM gần nhất)
+                                </p>
+                                <p>+ Không nhận Mắt Viễn</p>
+                                <p>
+                                    * Hướng dẫn bảo quản :</br>
+                                    - Nên dùng cả hai tay khi đeo và gỡ gọng kính</br>
+                                    - Tránh cầm vào tròng kính mắt</br>
+                                    - Vệ sinh và lau chùi mắt kính bằng nước xịt, khăn lau chuyên dụng </br>
+                                    - Để gọng kính vào hộp khi không sử dụng
+                                </p>
+                                <img src="./image/dichvu.jpg" alt="">
+                                <p>
+                                    * Chính sách bảo hành của Lily:</br>
+                                    - Đổi hàng trong vòng 3 ngày kể từ ngày nhận hàng nếu lỗi do NSX (với điều kiện Giá trị sản phẩm đổi ngang bằng hoặc cao hơn giá trị sản phẩm cũ)</br>
+                                    - Kính mắt Lily chịu trách nhiệm bảo hành kính mắt trong vòng 7 ngày kể từ ngày cắt kính</br>
+                                    - Trong quá trình đeo có bị lỏng ốc, Shop sẽ hỗ trợ vặn vít miễn phí cho khách</br>
+                                    - Vệ sinh miễn phí kính định kỳ.
+                                </p>
+                                <p>* Xuất xứ: Việt Nam</p>
+                                <img src="./image/dichvu.jpg" alt="">
+                            </div>
+                        </div>
+                        
+                        <!-- Assess-->
+                        <div id="pdleft-bottom">
+                            <h2>ĐÁNH GIÁ SẢN PHẨM</h2>
+                            <div id="content-assess" ng-controller="AccessCtrl">
+                                <div class="container-assess" ng-repeat="acc in listAccesses" >
+                                    <img ng-src="'http://localhost:44364/api/BaiViet/get-img/' + acc.image || './image/default_product.jpg'" 
+                                        style="width: 50px; height: 50px; border-radius: 50%;"
+                                        alt="">
+                                    <div class="access-detail">
+                                        <div>
+                                            <p>{{acc.tenTaiKhoan}}</p>
+                                            <div class="rating">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                        </div>
+                                        <p>
+                                            {{acc.binhLuan}}
+                                        </p>
+                                        <p class="dateDanhGia">{{acc.ngayDanhGia | date: dd/MM/yyyy}}</p>
+                                    </div>
+                                    
+                                </div>
+                            
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div id="product-detail-right">
+                        <h3>SẢN PHẨM NỔI BẬT</h3>
+                        <div id="hot-products">
+                            <div class="col-lg-12">
+                                <div id="hot-products-detail">
+                                    <img src="./image/kinhram.jpg" alt="">
+                                    <span>Kính mát nam nữ chống UV400 thiết kế mắt vuông dễ đeo màu sắc thời trang 602335</span>
+                                    <p>299.000đ</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div id="hot-products-detail">
+                                    <img src="./image/kinhram.jpg" alt="">
+                                    <span>Kính mát nam nữ chống UV400 thiết kế mắt vuông dễ đeo màu sắc thời trang 602335</span>
+                                    <p>299.000đ</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div id="hot-products-detail">
+                                    <img src="./image/kinhram.jpg" alt="">
+                                    <span>Kính mát nam nữ chống UV400 thiết kế mắt vuông dễ đeo màu sắc thời trang 602335</span>
+                                    <p>299.000đ</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div id="hot-products-detail">
+                                    <img src="./image/kinhram.jpg" alt="">
+                                    <span>Kính mát nam nữ chống UV400 thiết kế mắt vuông dễ đeo màu sắc thời trang 602335</span>
+                                    <p>299.000đ</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div id="content-left"></div>
+                <div id="content-right"></div>
+
+            </div>
+        </div>
+        <div id="footer">
+            <div id="footer-container">
+                <div id="footer-info">
+                    <span class="name">LING GLASSES</span>
+                    <div class="activity">
+                        <p><span class="bold">Địa chỉ:</span> Khoái Châu, Hưng Yên</p>
+                        <p><span class="bold">Mon - Sun:</span> 8:00 AM - 9:00 PM </p>
+                        <p><span class="bold">Hotline:</span> 0564105678</p>
+                    </div>
+
+                    <p>Đăng ký để nhận được thông báo mới nhất</p>
+                    <div class="singup-email">
+                        <input type="text" placeholder="Nhập địa chỉ email tại đây..."></input>
+                        <button type="submit"><i class="far fa-envelope"></i></button>
+                    </div>
+                    <div class="social-network">
+                        <i class="fab fa-facebook"></i>
+                        <i class="fab fa-instagram"></i>
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+
+                </div>
+                <div id="footer-address">
+
+                </div>
+                <div id="footer-policy">
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>
