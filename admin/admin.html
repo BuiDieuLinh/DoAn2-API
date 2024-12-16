@@ -553,7 +553,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="action-buttons">
+                                <div class="action-buttons-price">
                                     <button id="addDetail" ng-click="AddSale()">Thêm</button>
                                     <button id="editDetail">Sửa</button>
                                     <button id="deleteDetail">Xóa</button>
@@ -641,9 +641,9 @@
                                     <td class="date-signup">{{user.role}}</td>
                                     <td class="email-user">{{user.email}}</td>
                                     <td class="phone-user">{{user.soDienThoai}}</td>
-                                    <td class="action-buttons">
-                                        <button class="btn-edit" ng-click="openEditUserPopup(user)"><i class="far fa-edit"></i></button>
-                                        <button class="btn-delete" ng-click="XoaUser(user.nguoidung_id)"><i class="far fa-trash-alt"></i></button>
+                                    <td class="action-buttons-customers">
+                                        <button class="btn-edit-cus" ng-click="openEditUserPopup(user)"><i class="far fa-edit"></i></button>
+                                        <button class="btn-delete-cus" ng-click="XoaUser(user.nguoidung_id)"><i class="far fa-trash-alt"></i></button>
                                     </td>
                                 </tr>
                                 
@@ -855,6 +855,7 @@
                                     <select id="selectStatus" ng-model="selectedOrder.trangThaiGiaoHang" ng-options="status for status in statusOptions">
                                         <option value="">Chọn trạng thái</option>
                                     </select>
+                                    <button class="btn-update-status" ng-click="updateShipStatus(selectedOrder)">Update</button>
                                     
                                     <p><strong>Trạng Thái Thanh Toán:</strong> {{ selectedOrder.trangThaiThanhToan }}</p>
                                     <p><strong>Ngày hoàn thành đơn hàng:</strong> {{ selectedOrder.ngayHoanThanhDH | date: 'dd/MM/yyyy'}}</p>

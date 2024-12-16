@@ -269,7 +269,8 @@ a{
     padding: 4px;
 }
 
-.product-table .btn-edit-pro, .user-table .btn-edit-pro {
+.product-table .btn-edit-pro,
+.user-table .btn-edit-cus {
     color: var(--main-background); /* Màu nền chính cho nút chỉnh sửa */
     border: 1px solid var(--main-background); 
     border-radius: 10px;
@@ -277,10 +278,10 @@ a{
     cursor: pointer;
 }
 
-.product-table .btn-edit-pro:hover, .user-table .btn-edit-pro:hover{
+.product-table .btn-edit-pro:hover, .user-table .btn-edit-cus:hover{
     background-color: #ccc;
 }
-.product-table .btn-delete-pro, .user-table .btn-delete-pro {
+.product-table .btn-delete-pro, .user-table .btn-delete-cus {
     border: 1px solid var(--main-background);
     border-radius: 10px;
     color: var(--main-color); /* Màu nút xóa */
@@ -1725,13 +1726,13 @@ input[type="text"], input[type="number"], input[type="date"] {
     box-sizing: border-box;
 }
 
-.action-buttons {
+.action-buttons-price {
     display: flex;
     gap: 10px;
     margin-top: 10px;
 }
 
-.action-buttons button {
+.action-buttons-price button {
     padding: 10px ;
     border: none;
     background-color: #A9141E;
@@ -1741,7 +1742,7 @@ input[type="text"], input[type="number"], input[type="date"] {
     font-size: 14px;
 }
 
-.action-buttons button:hover {
+.action-buttons-price button:hover {
     background-color: #8c1119;
 }
 

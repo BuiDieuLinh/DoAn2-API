@@ -47,7 +47,7 @@ appuser.controller("OrderCtrl", function($scope,$http) {
                     }
 
                     // Lặp qua từng chi tiết hóa đơn
-                    hd.listChiTietDH.forEach(function (item) {
+                    hd.listChiTietDHB.forEach(function (item) {
                         if (item.thuoctinh_id) {
                             console.log(item.thuoctinh_id)
                             // Gọi API lấy thông tin sản phẩm theo option_id
@@ -57,7 +57,7 @@ appuser.controller("OrderCtrl", function($scope,$http) {
                                     item.infoProductByOption = optionResponse.data;
                                     
                                     // Thêm chi tiết hóa đơn vào nhóm tương ứng
-                                    groupedOrders[hd.donhangban_id].listChiTietDH.push(item);
+                                    groupedOrders[hd.donhangban_id].listChiTietDHB.push(item);
     
                                     // Chuyển groupedOrders thành mảng
                                     $scope.groupedOrders = Object.values(groupedOrders);
@@ -83,9 +83,10 @@ appuser.controller("OrderCtrl", function($scope,$http) {
         let total = 0;
     
         // Kiểm tra nếu listChiTietDH tồn tại và là một mảng
-        if (Array.isArray(order.listChiTietDH)) {
-        order.listChiTietDH.forEach(detail => {
-            const price = detail.infoProductByOption?.giaBan || 0; // Giá bán
+        if (Array.isArray(order.listChiTietDHB)) {
+        order.listChiTietDHB.forEach(detail => {
+            const discount = (detail.infoProductByOption.giaBan || 0) * (detail.infoProductByOption.phanTramGiam || 0) / 100;
+            const price = (detail.infoProductByOption.giaBan || 0) - discount;
             const quantity = detail.soLuong || 0; // Số lượng
             total += price * quantity; // Cộng dồn giá trị
         });
@@ -94,7 +95,7 @@ appuser.controller("OrderCtrl", function($scope,$http) {
         return total;
     };
 
-    $scope.GetUser = function (){
+    $scope.GetUser = function (){ 
         $http({
             method: 'GET',
             url: `${currentuser_url}/api/User/GetData?id=${nguoidung_id}`,
@@ -121,4 +122,53 @@ appuser.controller("OrderCtrl", function($scope,$http) {
     $scope.closeMyOrderDetail = function(){
         $scope.isOrderDetailOpen = false
     }
+
+    $scope.comfirmOrder = function(order){
+        console.log("Confirm Order:", order); // Kiểm tra xem hàm được gọi chưa
+        if (confirm("Xác nhận đơn hàng?")) {
+            $scope.selectedOrder.trangThaiGiaoHang = "Hoàn thành";
+            var dateHT = new Date()
+            $scope.selectedOrder.ngayHoanThanhDH = dateHT.toISOString()
+            $scope.selectedOrder.nguoidung_id = nguoidung_id;
+            $scope.selectedOrder.listChiTietDHB.forEach(function(item) {
+                item.status = 2; // Gán trạng thái là 2
+            });
+            $http({
+                method: "PUT",
+                url: currentuser_url + '/api/DonHang/update',
+                data: JSON.stringify(order),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(function (response) {
+                alert("Xác nhận đơn hàng thành công!");
+            }).catch(function (error) {
+                console.error("Lỗi khi cập nhật trạng thái đơn hàng: ", error);
+            });
+        }
+    };
+    
+    $scope.cancelOrder = function(order){
+        console.log("Cancel Order:", order); // Kiểm tra xem hàm được gọi chưa
+        if (confirm("Bạn có chắc chắn muốn hủy đơn hàng không?")) {
+            $scope.selectedOrder.trangThaiDonHang = "Đã hủy";
+            $scope.selectedOrder.nguoidung_id = nguoidung_id;
+            $scope.selectedOrder.listChiTietDHB.forEach(function(item) {
+                item.status = 3; // Gán trạng thái là 3
+            });
+            $http({
+                method: "PUT",
+                url: currentuser_url + '/api/DonHang/update',
+                data: JSON.stringify(order),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(function (response) {
+                alert("Hủy đơn hàng thành công!");
+            }).catch(function (error) {
+                console.error("Lỗi khi hủy đơn hàng: ", error);
+            });
+        }
+    };
+    
 })    

@@ -207,7 +207,7 @@
                                         <span style="font-weight: normal; color: rgb(14, 93, 129)">Mã đơn hàng: {{order.donhangban_id}}</span>
                                         <span>{{order.trangThaiDonHang}}</span>
                                     </div>
-                                    <div class="order-item" ng-repeat="detail in order.listChiTietDH">
+                                    <div class="order-item" ng-repeat="detail in order.listChiTietDHB">
                                         <img 
                                             ng-src="{{'http://localhost:44364/api/BaiViet/get-img/' + detail.infoProductByOption.imageCon || './image/default_product.jpg'}}" 
                                             alt="" 
@@ -222,11 +222,11 @@
                                             <p class="product-quantity">x{{detail.soLuong}}</p>
                                         </div>
                                         <div class="product-price">
-                                            <p class="original-price" ng-if="detail.infoProductByOption.giaCu">
-                                                {{detail.infoProductByOption.giaCu | currency : 'đ'}}
+                                            <p class="original-price" ng-if="detail.infoProductByOption.phanTramGiam">
+                                                {{detail.infoProductByOption.giaBan | number: 0}}đ
                                             </p>
                                             <p class="discount-price">
-                                                {{detail.infoProductByOption.giaBan | number: 0}}đ
+                                                {{detail.infoProductByOption.giaBan - (detail.infoProductByOption.giaBan*detail.infoProductByOption.phanTramGiam/100) | number: 0}}đ
                                             </p>
                                         </div>
                                         
@@ -258,7 +258,7 @@
                                 </div>
                                 <div id="myorderDetail">
                                     <span><i class="fas fa-store"></i> Ling Glasses Shop</span>
-                                    <div class="order-item" ng-repeat="detail in selectedOrder.listChiTietDH">
+                                    <div class="order-item" ng-repeat="detail in selectedOrder.listChiTietDHB">
                                         <img 
                                             ng-src="{{'http://localhost:44364/api/BaiViet/get-img/' + detail.infoProductByOption.imageCon || './image/default_product.jpg'}}" 
                                             alt="" 
@@ -273,11 +273,11 @@
                                             <p class="product-quantity">x{{detail.soLuong}}</p>
                                         </div>
                                         <div class="product-price">
-                                            <p class="original-price" ng-if="detail.infoProductByOption.giaCu">
-                                                {{detail.infoProductByOption.giaCu | number: 0}}đ
+                                            <p class="original-price" ng-if="detail.infoProductByOption.phanTramGiam">
+                                                {{detail.infoProductByOption.giaBan | number: 0}}đ
                                             </p>
                                             <p class="discount-price">
-                                                {{detail.infoProductByOption.giaBan | number: 0}}đ
+                                                {{detail.infoProductByOption.giaBan - (detail.infoProductByOption.giaBan*detail.infoProductByOption.phanTramGiam/100) | number: 0}}đ
                                             </p>
                                         </div>
                                         
@@ -289,7 +289,16 @@
                                 </div>
                                 <div id="actions">
                                     <button class="btn-exit" ng-click="closeMyOrderDetail()">Thoát</button>
-                                    <button class="btn-acceptOrder" disabled>Xác Nhận đơn hàng</button>
+                                    <button class="btn-acceptOrder" 
+                                        ng-if="selectedOrder.trangThaiGiaoHang === 'Đang vận chuyển'" 
+                                        ng-click="comfirmOrder(selectedOrder)">
+                                        Xác Nhận đơn hàng
+                                    </button>
+                                    <button class="btn-acceptOrder" 
+                                        ng-if="selectedOrder.trangThaiDonHang === 'Chưa xử lý'"
+                                        ng-click="cancelOrder(selectedOrder)">
+                                        Hủy đơn hàng
+                                    </button>
                                 </div>
                             </div>
                         </div>

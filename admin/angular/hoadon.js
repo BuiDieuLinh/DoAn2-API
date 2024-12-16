@@ -71,13 +71,10 @@ app.controller("HoaDonBanCtrl", function ($scope, $http) {
     
 	$scope.LoadHD();
 
-
-
     // update status
     $scope.UpdateOrderStatus = function (order) {
         // Duyệt qua từng mục trong listChiTietDHN và cập nhật trạng thá
         if($scope.selectedOrder.trangThaiDonHang === "Đã xử lý"){
-            $scope.selectedOrder.trangThaiThanhToan = "Đã thanh toán";
             $scope.selectedOrder.trangThaiGiaoHang = "Chờ giao hàng"
         }
         if($scope.selectedOrder.trangThaiDonHang === "Hoàn thành"){
@@ -104,30 +101,55 @@ app.controller("HoaDonBanCtrl", function ($scope, $http) {
         });
     };
 
-    // xuất hóa đơn
-    // $scope.ExportBill = function (order) {
-    //     $scope.selectedOrder = order;
-    //     $scope.selectedOrder.trangThaiXuatHoaDon = "Đã xuất";
-    //     $scope.selectedOrder.ngayXuatHD = new Date();
-    //     // Duyệt qua từng mục trong listChiTietDHN và cập nhật trạng thái
-    //     $scope.selectedOrder.listChiTietDHB.forEach(function(item) {
-    //         item.status = 2; // Gán trạng thái là 2
-    //     });
-    //     $http({
-    //         method: "PUT",
-    //         url: current_url + '/api/HoaDonBan/update',
-    //         data: JSON.stringify(order),
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         }
-    //     }).then(function (response) {
-    //         alert("Xuất hóa đơn thành công!");
-    //         $scope.LoadHD();
-    //     }).catch(function (error) {
-    //         console.error("Lỗi khi xuất hóa đơn: ", error);
-    //     });
-    // };
+    // update trạng thái giao hàng
+    $scope.updateShipStatus = function(order) {
+        // Kiểm tra giá trị trạng thái và cập nhật
+        switch (order.trangThaiGiaoHang) {
+            case "Chờ xác nhận":
+                // Cập nhật trạng thái Chờ xác nhận
+                console.log("Đơn hàng đang ở trạng thái 'Chờ xác nhận'");
+                $scope.selectedOrder.trangThaiGiaoHang = "Chờ xác nhận"
+                break;
+            case "Chờ giao hàng":
+                // Cập nhật trạng thái Chờ giao hàng
+                console.log("Đơn hàng đang ở trạng thái 'Chờ giao hàng'");
+                $scope.selectedOrder.trangThaiGiaoHang = "Chờ giao hàng"
+                break;
+            case "Đang giao hàng":
+                // Cập nhật trạng thái Đang giao hàng
+                console.log("Đơn hàng đang ở trạng thái 'Đang giao hàng'");
+                $scope.selectedOrder.trangThaiGiaoHang = "Đang giao hàng"
+                break;
+            case "Hoàn thành":
+                // Cập nhật trạng thái Hoàn thành
+                console.log("Đơn hàng đã hoàn thành");
+                $scope.selectedOrder.trangThaiGiaoHang = "Hoàn Thành"
+                break;
+            default:
+                console.log("Trạng thái không hợp lệ");
+                break;
+        }
     
+        // Thực hiện API hoặc logic cập nhật trạng thái
+        $scope.selectedOrder.listChiTietDHB.forEach(function(item) {
+            item.status = 2; // Gán trạng thái là 2
+        });
+        $http({
+            method: "PUT",
+            url: current_url + '/api/HoaDonBan/update',
+            data: JSON.stringify(order),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function (response) {
+            alert("Cập nhật trạng thái giao hàng thành công!");
+            // $scope.selectedOrder = response.data
+            $scope.LoadSalesOrders(); // Hàm để tải lại danh sách đơn hàng
+            $scope.closeDetailBillPopup();
+        }).catch(function (error) {
+            console.error("Lỗi khi cập nhật trạng thái giao hàng: ", error);
+        });
+    };
     $scope.filterOrder = function(order){
         if(!$scope.searchOrder){
             return true

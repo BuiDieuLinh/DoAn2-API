@@ -94,6 +94,15 @@ appuser.controller('CartCtrl', function($scope,$http) {
         return `HD${Date.now()}_${Math.floor(Math.random() * 10000)}`;
     };
     
+    $scope.paymentMethod = "cod"; // Giá trị mặc định là "Thanh toán khi nhận hàng"
+
+    // Hàm xử lý khi thay đổi phương thức thanh toán
+    $scope.updatePaymentStatus = function () {
+        $scope.orderData.trangThaiThanhToan = $scope.paymentMethod === "cod" 
+            ? "Chưa thanh toán" 
+            : "Đã thanh toán";
+    };
+
     $scope.createBill = function () {
         // Kiểm tra danh sách chi tiết đơn hàng
         var getLocal = localStorage.getItem("tempStorage");
@@ -103,17 +112,17 @@ appuser.controller('CartCtrl', function($scope,$http) {
             alert("Danh sách sản phẩm trong giỏ hàng trống. Không thể tạo đơn hàng!");
             return;
         }
-    
+        var ngayban = new Date();
         var orderID = $scope.generateOrderId();
         const orderData = {
             donhangban_id: orderID,
             nguoidung_id: localStorage.getItem("user_id"),
-            ngayBan: new Date(),
+            ngayBan: ngayban.toISOString(),
             trangThaiDonHang: "Chưa xử lý",
-            trangThaiThanhToan: "Chưa thanh toán",
+            trangThaiThanhToan: $scope.paymentMethod === "cod" ? "Chưa thanh toán" : "Đã thanh toán",
             trangThaiGiaoHang: "Chờ xử lý",
             ngayHoanThanhDH: null,
-            listChiTietDH: orderDetails.map(item => ({
+            listChiTietDHB: orderDetails.map(item => ({
                 donhangban_id: orderID,
                 chitietdhb_id: "ass",
                 thuoctinh_id: item.thuoctinh_id,

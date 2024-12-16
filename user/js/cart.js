@@ -199,30 +199,38 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("DOMContentLoaded", () => {
     // Lấy dữ liệu từ localStorage
     const rawData = localStorage.getItem(`${localStorage.getItem("user_id")}_infoshipping`);
-    const shippingData = rawData ? JSON.parse(rawData) : [];
+    let shippingData = rawData ? JSON.parse(rawData) : [];
 
-    // Lấy phần tử form nơi sẽ hiển thị thông tin
+    // Loại bỏ các bản ghi trùng lặp
+    shippingData = shippingData.filter((item, index, self) =>
+        index === self.findIndex((t) =>
+            t.tenNguoiDung === item.tenNguoiDung &&
+            t.diaChi === item.diaChi &&
+            t.soDienThoai === item.soDienThoai
+        )
+    );
+
+    // Lấy form và gán giá trị
     const form = document.getElementById("formAddress");
-
-    // Kiểm tra và điền thông tin vào form nếu có dữ liệu
     if (form && shippingData.length > 0) {
-        shippingData.forEach((info, index) => {
-            // Nếu có dữ liệu, gán vào các input tương ứng
-            const nameInput = form.querySelector("#nameUser");
-            const addressInput = form.querySelector("#addressShip");
-            const phoneInput = form.querySelector("#phoneShip");
+        const info = shippingData[0]; // Lấy mục đầu tiên
 
-            if (nameInput && addressInput && phoneInput) {
-                nameInput.value = info.tenNguoiDung || "";
-                addressInput.value = info.diaChi || "";
-                phoneInput.value = info.soDienThoai || "";
-            } else {
-                console.error("Không tìm thấy các input trong form.");
-            }
-        });
+        // Gán dữ liệu vào input
+        const nameInput = form.querySelector("#nameUser");
+        const addressInput = form.querySelector("#addressShip");
+        const phoneInput = form.querySelector("#phoneShip");
+
+        if (nameInput && addressInput && phoneInput) {
+            nameInput.value = info.tenNguoiDung || "";
+            addressInput.value = info.diaChi || "";
+            phoneInput.value = info.soDienThoai || "";
+        }
     } else {
         console.error("Không có dữ liệu hoặc không tìm thấy form.");
     }
+
+    // Lưu dữ liệu đã lọc lại vào localStorage (nếu cần)
+    localStorage.setItem(`${localStorage.getItem("user_id")}_infoshipping`, JSON.stringify(shippingData));
 });
 
   

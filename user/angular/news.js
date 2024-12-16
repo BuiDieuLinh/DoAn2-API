@@ -9,12 +9,12 @@ appuser.controller("NewsCtrl", function($scope, $http){
             });
     }
     $scope.LoadNews()
-    $scope.linkImage = function(){
-        $http.get(`${currentuser_url}'/api/BaiViet/get-img/'${$scope.listNews.image}`)
-            .then(function(response){
-                $scope.imageNews = response.data;
-                console.log("hình ảnh news: ",$scope.imageNews)
-            })
-    }
-    $scope.linkImage()
+    // $scope.linkImage = function(){
+    //     $http.get(`${currentuser_url}'/api/BaiViet/get-img/'${$scope.listNews.image}`)
+    //         .then(function(response){
+    //             $scope.imageNews = response.data;
+    //             console.log("hình ảnh news: ",$scope.imageNews)
+    //         })
+    // }
+    // $scope.linkImage()
 })

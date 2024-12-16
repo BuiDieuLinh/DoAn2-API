@@ -112,7 +112,7 @@
                         <!-- Tạm tính -->
                         <div class="cart-summary">
                             <p><strong>Tổng tiền:</strong> <span id="cart-total"></span> </p>
-                            <button class="checkout-btn" ng-click="createBill()" onclick="window.location.href='account.html'">Thanh toán</button>
+                            <button class="checkout-btn" ng-click="createBill()">Thanh toán</button>
                         </div>
                     </div>
                 </div>
@@ -162,10 +162,12 @@
                 
                     <div class="payment-method">
                         <label>
-                            <input type="radio" name="payment-method" value="cod"> Thanh toán khi nhận hàng
+                            <input type="radio" name="payment-method" value="cod" ng-model="paymentMethod" 
+                            ng-change="updatePaymentStatus()"> Thanh toán khi nhận hàng
                         </label>
                         <label>
-                            <input type="radio" name="payment-method" value="bank-transfer"> Chuyển khoản ngân hàng
+                            <input type="radio" name="payment-method" value="bank-transfer" ng-model="paymentMethod" 
+                            ng-change="updatePaymentStatus()"> Chuyển khoản ngân hàng
                         </label>
                         <p>Thực hiện thanh toán vào ngay tài khoản ngân hàng của chúng tôi. Vui lòng sử dụng Mã đơn hàng của bạn trong phần Nội dung thanh toán. Đơn hàng sẽ được giao sau khi tiền đã chuyển.</p>
                     </div>

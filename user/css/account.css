@@ -312,16 +312,15 @@ a{
     }
 
     #content-container {
-        display: block; /* Đảm bảo các phần tử xếp chồng lên nhau */
-        padding: 0; /* Loại bỏ padding nếu có */
+        grid-template-columns: 1fr;
     }
 
-    #content-right {
-        width: 100%; /* Chiếm toàn bộ chiều rộng màn hình */
-        margin: 0; /* Loại bỏ margin nếu có */
-        padding: 0; /* Loại bỏ padding nếu có */
-        box-sizing: border-box; /* Bao gồm padding và border trong kích thước tổng */
-    }
+    /* #content-right {
+        width: 100%; 
+        margin: 0;
+        padding: 0; 
+        box-sizing: border-box; 
+    } */
 
     #container-account {
         display: block; /* Các thành phần trong content-right sẽ xếp dọc */
