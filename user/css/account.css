@@ -652,6 +652,16 @@ a{
     color: #333;
     border-bottom: 1px solid #ddd;
 }
+
+.order-header p a{
+    padding-left: 10px;
+    font-weight: normal;
+    color: #8f0f18;
+}
+
+.order-header p a:hover{
+    text-decoration: underline;
+}
 .order-group {
     margin-bottom: 20px;
     padding: 10px;

@@ -205,7 +205,10 @@
                                     ng-click="openMyOrderDetail(order)">
                                     <div class="order-header">
                                         <span style="font-weight: normal; color: rgb(14, 93, 129)">Mã đơn hàng: {{order.donhangban_id}}</span>
-                                        <span>{{order.trangThaiDonHang}}</span>
+                                        <p>
+                                            <span>{{order.trangThaiDonHang}}</span>
+                                            <a href="" ng-if="order.trangThaiDonHang === 'Hoàn thành'" >ĐÁNH GIÁ</a>
+                                        </p>
                                     </div>
                                     <div class="order-item" ng-repeat="detail in order.listChiTietDHB">
                                         <img 
@@ -290,7 +293,7 @@
                                 <div id="actions">
                                     <button class="btn-exit" ng-click="closeMyOrderDetail()">Thoát</button>
                                     <button class="btn-acceptOrder" 
-                                        ng-if="selectedOrder.trangThaiGiaoHang === 'Đang vận chuyển'" 
+                                        ng-if="selectedOrder.trangThaiGiaoHang === 'Đang giao hàng'" 
                                         ng-click="comfirmOrder(selectedOrder)">
                                         Xác Nhận đơn hàng
                                     </button>

@@ -102,7 +102,7 @@ function SignUp() {
         // Xử lý kết quả trả về
         alert("Đăng ký thành công!");
         console.log("Response:", data);
-       
+       setTimeout(3000)
     })
     .catch(error => {
         // Xử lý lỗi

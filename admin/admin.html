@@ -20,7 +20,8 @@
     <script src="./angular/price.js"></script>
     <script src="./angular/report.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <title>Đồ Án 2</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>    <title>Đồ Án 2</title>
 </head>
 <body ng-app="PageAdmin">
     <div id="wapper">
@@ -34,53 +35,43 @@
                         <div class="tab active" onclick="openTab(event, 'home')">
                             <i class="fas fa-home icon"></i>
                             Trang Chủ
-                            <i class="fas fa-angle-right"></i>
                         </div>
                         <div class="tab" onclick="openTab(event, 'products')">
                             <i class="fas fa-glasses icon"></i>
                             Sản Phẩm
-                            <i class="fas fa-angle-right"></i>
                         </div>
                         <div class="tab" onclick="openTab(event, 'news')">
                             <i class="far fa-newspaper icon"></i>
                             Bài Viết
-                            <i class="fas fa-angle-right"></i>
                         </div>
                         <div class="tab" onclick="openTab(event, 'price')">
-                            <i class="far fa-newspaper icon"></i>
+                            <i class="fas fa-percent icon"></i>
                             Khuyến mãi
-                            <i class="fas fa-angle-right"></i>
                         </div>
                         <div class="tab" onclick="openTab(event, 'customers')">
                             <i class="far fa-user icon"></i>
                             Khách Hàng
-                            <i class="fas fa-angle-right"></i>
                         </div>
                         
                         <div class="tab" onclick="openTab(event, 'orders')">
                             <i class="fas fa-file-invoice icon"></i>
                             Đơn Hàng 
-                            <i class="fas fa-angle-right"></i>
                         </div>
                         <div class="tab" onclick="openTab(event, 'suppliers')">
                             <i class="fas fa-truck icon"></i>
                             Nhà Cung Cấp
-                            <i class="fas fa-angle-right"></i>
                         </div>
                         <div class="tab" onclick="openTab(event, 'imports')">
                             <i class="fas fa-file-upload icon"></i>
                             Đơn Hàng Nhập
-                            <i class="fas fa-angle-right"></i>
                         </div>
                         <div class="tab" onclick="openTab(event, 'reports')">
                             <i class="fas fa-info-circle icon"></i>
                             Thống Kê
-                            <i class="fas fa-angle-right"></i>
                         </div>
-                        <div class="tab" onclick="openTab(event, 'settings')">
-                            <i class="fas fa-cog icon"></i>
-                            Cài Đặt
-                            <i class="fas fa-angle-right"></i>
+                        <div class="tab" onclick="Exit()">
+                            <i class="fas fa-sign-out-alt icon"></i>
+                            Đăng xuất
                         </div>
                     </div>
                 </div>
@@ -775,24 +766,24 @@
                                 <table id="list-order" >
                                     <thead>
                                         <tr>
-                                            <th><input type="checkbox" onclick="toggleAll(this)"></th> 
                                             <th> Mã </th>
                                             <th> Ngày tạo </th>
                                             <th> Khách hàng </th>
                                             <th> Thanh toán </th>
                                             <th> Giao hàng </th>
+                                            <th> Ngày hoàn thành </th>
                                             <th> Tổng tiền </th>         
                                             <th> </th>         
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="x in listHD | filter : filterOrder" >
-                                            <td><input type="checkbox" class="row-checkbox"></td>
                                             <td>{{x.donhangban_id}}</td>
-                                            <td>{{x.ngayBan | date: 'dd/MM/yyyy'}}</td>
+                                            <td>{{x.ngayBan }}</td>
                                             <td>{{x.tenNguoiDung}}</td>
                                             <td class="status-processing">{{x.trangThaiThanhToan}}</td>
                                             <td class="status-shipped">{{x.trangThaiGiaoHang}}</td>
+                                            <td class="status-shipped">{{x.ngayHoanThanhDH || '---'}}</td>
                                             <td>{{x.totalBill | number:0}}đ</td>
                                             <td>
                                                 <button class= "btn-bill btn-Detail-bill" 
@@ -811,26 +802,32 @@
                                 <div class="popup-sales-content">
                                     <div class="header-sales">
                                         <button class="btn-close-popup" ng-click="closeDetailBillPopup()">Đóng</button>
+                                        <button class="btn-comfirm-order" 
+                                                ng-if="selectedOrder.trangThaiDonHang === 'Chưa xử lý'"
+                                                ng-click="UpdateOrderStatus(selectedOrder)">
+                                                Xác nhận xử lý
+                                        </button>
                                     </div>
                                     <h3>Chi Tiết Hóa Đơn Bán</h3>
                                     <div class="info-order">
                                         <p><strong>Mã Đơn Hàng:</strong> {{ selectedOrder.donhangban_id }}</p>
                                         <p><strong>Ngày Bán:</strong> {{ selectedOrder.ngayBan | date: 'dd/MM/yyyy' }}</p>
                                         <p><strong>Tên Người Dùng:</strong> {{ selectedOrder.tenNguoiDung }}</p>
-                                        <p><strong>Status:</strong>
-                                            <select id="selectStatus" ng-model="selectedOrder.trangThaiDonHang" ng-options="status for status in orderStatuses">
+                                        <p><strong>Order Status:</strong> {{selectedOrder.trangThaiDonHang}}</p>
+                                        <p><strong>Delivery Status:</strong>
+                                            <select id="selectStatus" ng-model="selectedOrder.trangThaiGiaoHang" ng-options="status for status in statusOptions">
                                                 <option value="">Chọn trạng thái</option>
                                             </select>
-                                            <button class="btn-update-status" ng-click="UpdateOrderStatus(selectedOrder)">Update Status</button>
+                                            <button class="btn-update-status" ng-click="updateShipStatus(selectedOrder)">Update</button>
                                         </p>
-                                        
+                                        <p><strong>Payment Status:</strong> {{ selectedOrder.trangThaiThanhToan }}</p>
+                                        <p><strong>Completion Date:</strong> {{ selectedOrder.ngayHoanThanhDH | date: 'dd/MM/yyyy'}}</p>
                                     </div>
 
                                     <h4>Sản Phẩm</h4>
                                     <table>
                                         <thead>
                                             <tr>
-                                                <th>Mã Chi Tiết</th>
                                                 <th>Tên sản phẩm</th>
                                                 <th>Màu sắc</th>
                                                 <th>Độ cận</th>
@@ -841,24 +838,15 @@
                                         </thead>
                                         <tbody>
                                             <tr ng-repeat="item in selectedOrder.listChiTietDHB">
-                                                <td>{{ item.chitietdhb_id }}</td>
                                                 <td>{{ item.infoProductByOption.tenKinhMat }}</td>
                                                 <td>{{ item.infoProductByOption.mauSac }}</td>
                                                 <td>{{ item.infoProductByOption.doCan }}</td>
-                                                <td>{{ item.infoProductByOption.giaBan | number:0 }}</td>
+                                                <td><s>{{ item.infoProductByOption.giaBan | number:0 }}đ </s>{{item.infoProductByOption.giaBan - item.infoProductByOption.giaBan*item.infoProductByOption.phanTramGiam/100 | number: 0}}đ</td>
                                                 <td>{{ item.soLuong }}</td>
-                                                
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <p><strong>Trạng thái giao hàng:</strong></p>
-                                    <select id="selectStatus" ng-model="selectedOrder.trangThaiGiaoHang" ng-options="status for status in statusOptions">
-                                        <option value="">Chọn trạng thái</option>
-                                    </select>
-                                    <button class="btn-update-status" ng-click="updateShipStatus(selectedOrder)">Update</button>
-                                    
-                                    <p><strong>Trạng Thái Thanh Toán:</strong> {{ selectedOrder.trangThaiThanhToan }}</p>
-                                    <p><strong>Ngày hoàn thành đơn hàng:</strong> {{ selectedOrder.ngayHoanThanhDH | date: 'dd/MM/yyyy'}}</p>
+                                    <p style="color: #a9141e; text-align: right;">Tổng hóa đơn: <strong>{{calculateOrderTotal(selectedOrder) | number: 0}}đ</strong></p>
                                 </div>
                             </div>
 
@@ -1119,19 +1107,67 @@
 
                     <!-- Content Reports-->
                     <div id="reports" class="content">
-                        <h2>Báo Cáo</h2>
-                        <p>Đây là nội dung cho tab Báo Cáo.</p>
+                        <div id="reports-container">
+                            <div id="reports-basic">
+                                <div class="content-report" style="--report-color: #4CAF50;">
+                                    <i class="fas fa-chart-line"></i>
+                                    <div class="report-content">
+                                        <span>Doanh Thu</span>
+                                        <p>0</p>
+                                    </div>
+                                </div>
+                                <div class="content-report" style="--report-color: #2196F3;">
+                                    <i class="fas fa-percentage"></i>
+                                    <div class="report-content">
+                                        <span>Lãi Xuất</span>
+                                        <p>0</p>
+                                    </div>
+                                </div>
+                                <div class="content-report" style="--report-color: #FF9800;">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                    <div class="report-content">
+                                        <span>Đơn Hàng Đặt</span>
+                                        <p>0</p>
+                                    </div>
+                                </div>
+                                <div class="content-report" style="--report-color: #F44336;">
+                                    <i class="fas fa-sync-alt"></i>
+                                    <div class="report-content">
+                                        <span>Số Đơn Hủy</span>
+                                        <p>0</p>
+                                    </div>
+                                </div>
+                                <div class="content-report" style="--report-color: #9C27B0;">
+                                    <i class="fas fa-user-plus"></i>
+                                    <div class="report-content">
+                                        <span>Khách Hàng Mới</span>
+                                        <p>0</p>
+                                    </div>
+                                </div>
+                                <div class="content-report" style="--report-color: #00BCD4;">
+                                    <i class="fas fa-box-open"></i>
+                                    <div class="report-content">
+                                        <span>Hàng Tồn Kho</span>
+                                        <p>0</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="reports-chart">
+                                <h2>Thống kê</h2>
+                                <div id="revenueChart">
+                                    <canvas id="myChart"></canvas>
+                                </div>
+                                <input type="text" id="datePicker" placeholder="Chọn ngày"/>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Content Settings -->
-                    <div id="settings" class="content">
-                        <h2>Cài Đặt</h2>
-                        <p>Đây là nội dung cho tab Cài Đặt.</p>
-                    </div>
+                    
                 </div>
                 
             </div>
         </div>
     </div>
 </body>
+
 </html>

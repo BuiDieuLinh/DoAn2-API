@@ -2,7 +2,7 @@ appuser.controller("OrderCtrl", function($scope,$http) {
     $scope.orderUser = [];
     $scope.infoProductByOption = {}
     $scope.groupedOrders = {};
-    $scope.orderTabs = ["Tất cả", "Chờ xác nhận", "Chờ giao hàng", "Đang vận chuyển", "Hoàn thành", "Đã hủy"];
+    $scope.orderTabs = ["Tất cả", "Chờ xác nhận", "Chờ giao hàng", "Đang giao hàng", "Hoàn thành", "Đã hủy"];
     $scope.selectedTab = "Tất cả";
     var nguoidung_id = localStorage.getItem("user_id");
 
@@ -24,7 +24,7 @@ appuser.controller("OrderCtrl", function($scope,$http) {
                     "Tất cả": [],
                     "Chờ xác nhận": [],
                     "Chờ giao hàng": [],
-                    "Đang vận chuyển": [],
+                    "Đang giao hàng": [],
                     "Hoàn thành": [],
                     "Đã hủy": []
                 };
@@ -38,8 +38,8 @@ appuser.controller("OrderCtrl", function($scope,$http) {
                         $scope.groupedOrders["Chờ xác nhận"].push(hd);
                     } else if (hd.trangThaiDonHang === "Đã xử lý") {
                         $scope.groupedOrders["Chờ giao hàng"].push(hd);
-                    } else if (hd.trangThaiGiaoHang === "Đang vận chuyển") {
-                        $scope.groupedOrders["Đang vận chuyển"].push(hd);
+                    } else if (hd.trangThaiGiaoHang === "Đang giao hàng" && hd.trangThaiDonHang === "Đã xử lý") {
+                        $scope.groupedOrders["Đang giao hàng"].push(hd);
                     } else if (hd.trangThaiDonHang === "Hoàn thành") {
                         $scope.groupedOrders["Hoàn thành"].push(hd);
                     } else if (hd.trangThaiDonHang === "Đã hủy") {
@@ -127,6 +127,7 @@ appuser.controller("OrderCtrl", function($scope,$http) {
         console.log("Confirm Order:", order); // Kiểm tra xem hàm được gọi chưa
         if (confirm("Xác nhận đơn hàng?")) {
             $scope.selectedOrder.trangThaiGiaoHang = "Hoàn thành";
+            $scope.selectedOrder.trangThaiDonHang = "Hoàn thành";
             var dateHT = new Date()
             $scope.selectedOrder.ngayHoanThanhDH = dateHT.toISOString()
             $scope.selectedOrder.nguoidung_id = nguoidung_id;

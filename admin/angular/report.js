@@ -2,7 +2,7 @@ app.controller("ReportCtrl", function($scope, $http){
     $scope.reportToday = {}
 
     $scope.LoadReportToday = function(){
-        $http.get(current_url + '/api/HoaDonBan/ThongKeHomNay')
+        $http.get(current_url + '/api/ThongKe/ThongKeHomNay')
             .then(function(response){
                 $scope.reportToday = response.data;
             }).catch(function(err){

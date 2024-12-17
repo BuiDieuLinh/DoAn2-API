@@ -12,7 +12,6 @@ app.controller("HoaDonBanCtrl", function ($scope, $http) {
         $scope.showDetailBill = false;
     };
     
-    $scope.orderStatuses = ["Đã xử lý", "Đã hủy", "Hoàn thành"];
     $scope.statusOptions = ["Chờ xác nhận","Chờ giao hàng" ,"Đang giao hàng","Hoàn thành"];
 
     $scope.LoadHD = function () {
@@ -46,15 +45,12 @@ app.controller("HoaDonBanCtrl", function ($scope, $http) {
                             }).then(function(optionResponse){
                                 console.log(optionResponse.data);
                                 item.infoProductByOption = optionResponse.data; // Gán thông tin sản phẩm vào từng item
-                
-                                // Cập nhật tổng đơn hàng sau khi nhận thông tin sản phẩm
-                                hd.totalBill += item.infoProductByOption.giaBan * item.soLuong; // Cộng giá trị cho từng item vào tổng đơn hàng
+                                var discount = (item.infoProductByOption.giaBan || 0) * (item.infoProductByOption.phanTramGiam || 0) / 100;
+                                hd.totalBill += (item.infoProductByOption.giaBan - discount) * item.soLuong;
                             }).catch(function(err){
                                 console.log("Lỗi khi lấy thông tin qua optionID: ", err);
                             })
-                        } else {
-                            console.log("Không tìm thấy option_id cho sản phẩm:", item);
-                        }
+                        } 
                     });
                     console.log(`Tổng đơn hàng cho hóa đơn ${hd.nguoidung_id}: ${hd.totalBill}`);
                 });
@@ -71,16 +67,26 @@ app.controller("HoaDonBanCtrl", function ($scope, $http) {
     
 	$scope.LoadHD();
 
+    $scope.calculateOrderTotal = function (order) {
+        let total = 0;
+    
+        // Kiểm tra nếu listChiTietDH tồn tại và là một mảng
+        if (Array.isArray(order.listChiTietDHB)) {
+        order.listChiTietDHB.forEach(detail => {
+            const discount = (detail.infoProductByOption.giaBan || 0) * (detail.infoProductByOption.phanTramGiam || 0) / 100;
+            const price = (detail.infoProductByOption.giaBan || 0) - discount;
+            const quantity = detail.soLuong || 0; // Số lượng
+            total += price * quantity; // Cộng dồn giá trị
+        });
+        }
+    
+        return total;
+    };
+
     // update status
     $scope.UpdateOrderStatus = function (order) {
-        // Duyệt qua từng mục trong listChiTietDHN và cập nhật trạng thá
-        if($scope.selectedOrder.trangThaiDonHang === "Đã xử lý"){
-            $scope.selectedOrder.trangThaiGiaoHang = "Chờ giao hàng"
-        }
-        if($scope.selectedOrder.trangThaiDonHang === "Hoàn thành"){
-            $scope.selectedOrder.trangThaiGiaoHang === "Hoàn thành"
-        }
-        
+        $scope.selectedOrder.trangThaiDonHang = "Đã xử lý"
+        $scope.selectedOrder.trangThaiGiaoHang = "Chờ giao hàng"
         $scope.selectedOrder.listChiTietDHB.forEach(function(item) {
             item.status = 2; // Gán trạng thái là 2
         });

@@ -11,7 +11,13 @@ document.addEventListener("DOMContentLoaded",function(){
     }
 })
 
-
+function Exit(){
+    localStorage.removeItem("user_id");
+    localStorage.removeItem("hoten");
+    localStorage.removeItem("token");
+    localStorage.removeItem("role")
+    window.location.href = '../login/login.html'
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     const listItems = document.querySelectorAll(".tab");
@@ -88,42 +94,50 @@ function closeAddProduct() {
     document.getElementById("formAddProduct").style.display = "none";
     document.body.classList.remove('active-popup'); // Remove blur effect
 }
-document.addEventListener('DOMContentLoaded', () => {
-    // Biểu đồ Doanh Thu
-    const ctxRevenue = document.getElementById('revenueChart').getContext('2d');
-    new Chart(ctxRevenue, {
-        type: 'line',
-        data: {
-            labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ Nhật'],
-            datasets: [{
-                label: 'Doanh thu (triệu VND)',
-                data: [10, 15, 20, 25, 30, 35, 40],
-                borderColor: '#A9141E',
-                borderWidth: 2,
-                fill: false,
-            }]
-        },
-        options: {
-            responsive: true,
-            
-        }
-    });
 
-    // Biểu đồ Đơn Hàng
-    const ctxOrders = document.getElementById('ordersChart').getContext('2d');
-    new Chart(ctxOrders, {
-        type: 'doughnut',
-        data: {
-            labels: ['Đã giao', 'Đang xử lý', 'Đã hủy'],
-            datasets: [{
-                label: 'Trạng thái đơn hàng',
-                data: [50, 30, 20],
-                backgroundColor: ['#4CAF50', '#FFC107', '#F44336'],
-            }]
-        },
-        options: {
-            responsive: false,
 
+// biểu đồ
+// Khởi tạo biểu đồ
+const ctx = document.getElementById('myChart').getContext('2d');
+const myChart = new Chart(ctx, {
+    type: 'bar',  // Loại biểu đồ
+    data: {
+        labels: ['Ngày 1', 'Ngày 2', 'Ngày 3', 'Ngày 4', 'Ngày 5'],  // Nhãn
+        datasets: [{
+            label: 'Doanh thu',
+            data: [12, 19, 3, 5, 2],  // Dữ liệu
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
         }
-    });
-})
+    }
+});
+
+// Khởi tạo Flatpickr cho chọn ngày
+flatpickr("#datePicker", {
+    dateFormat: "Y-m-d",
+    onChange: function(selectedDates, dateStr, instance) {
+        console.log("Ngày đã chọn: " + dateStr);
+        // Cập nhật dữ liệu biểu đồ dựa trên ngày đã chọn
+        // Thực hiện gọi API hoặc tính toán lại dữ liệu tại đây
+    }
+});
