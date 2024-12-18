@@ -46,6 +46,8 @@ appuser.controller("ProductCtrl",function ($scope, $http){
         $scope.selectedColor = color;
         console.log($scope.selectedColor)
         $scope.updateDetails();
+        $scope.handleDecreaseClick();
+        $scope.handleIncreaseClick();
         console.log("sau chọn ", $scope.selectedDetails)
     };
 
@@ -53,6 +55,8 @@ appuser.controller("ProductCtrl",function ($scope, $http){
     $scope.selectPrescription = function(prescription) {
         $scope.selectedPrescription = prescription;
         $scope.updateDetails();
+        $scope.handleDecreaseClick();
+        $scope.handleIncreaseClick();
     };
 
     // Cập nhật thông tin chi tiết ở trang index
@@ -71,6 +75,8 @@ appuser.controller("ProductCtrl",function ($scope, $http){
         $scope.selectedColor = color;
         console.log($scope.selectedColor)
         $scope.updateDetailsCate();
+        $scope.handleDecreaseClick();
+        $scope.handleIncreaseClick();
         console.log("sau chọn ", $scope.selectedDetails)
     };
 
@@ -78,7 +84,8 @@ appuser.controller("ProductCtrl",function ($scope, $http){
     $scope.selectPrescriptionCate = function(prescription) {
         $scope.selectedPrescription = prescription;
         $scope.updateDetailsCate();
-        
+        $scope.handleDecreaseClick();
+        $scope.handleIncreaseClick();
     };
     $scope.updateDetailsCate = function() {
         $scope.selectedDetails = $scope.product.listThuocTinh.find(function(item) {
@@ -131,7 +138,7 @@ appuser.controller("ProductCtrl",function ($scope, $http){
             name: $scope.product.tenKinhMat,
             sale: $scope.selectedDetails.giaBan,
             price: $scope.selectedDetails.giaBan-($scope.selectedDetails.giaBan*$scope.selectedDetails.phanTramGiam/100),
-            quanlity: 1,
+            quanlity: $scope.soluongDetail,
             photo: $scope.selectedDetails.imageCon,
             color: $scope.selectedDetails.mauSac,
             prescription: $scope.selectedDetails.doCan || null,
@@ -176,7 +183,7 @@ appuser.controller("ProductCtrl",function ($scope, $http){
             thuoctinh_id: $scope.selectedDetails.thuoctinh_id,
             name: $scope.itemEdit.tenKinhMat,
             price: $scope.selectedDetails.giaBan-($scope.selectedDetails.giaBan*$scope.selectedDetails.phanTramGiam/100),
-            quanlity: 1,
+            quanlity: $scope.soluongDetail,
             photo: $scope.selectedDetails.imageCon,
             color: $scope.selectedDetails.mauSac,
             prescription: $scope.selectedDetails.doCan || null
@@ -219,7 +226,7 @@ appuser.controller("ProductCtrl",function ($scope, $http){
             thuoctinh_id: $scope.selectedDetails.thuoctinh_id,
             name: $scope.product.tenKinhMat,
             price:$scope.selectedDetails.giaBan-($scope.selectedDetails.giaBan*$scope.selectedDetails.phanTramGiam/100),
-            quanlity: 1,
+            quanlity: $scope.soluongDetail,
             photo: $scope.selectedDetails.imageCon,
             color: $scope.selectedDetails.mauSac,
             prescription: $scope.selectedDetails.doCan || null
@@ -334,4 +341,27 @@ appuser.controller("ProductCtrl",function ($scope, $http){
         .catch(function () {
             alert("Không tìm thấy sản phẩm!");
         });
+
+    $scope.soluongDetail = 1; // Giá trị mặc định của số lượng
+
+    $scope.handleDecreaseClick = function() {
+        let value = parseInt($scope.soluongDetail);
+        if (value > 1) {
+            $scope.soluongDetail--;
+        }
+    };
+    
+    $scope.handleIncreaseClick = function() {
+        let value = parseInt($scope.soluongDetail);
+        let currentValue = parseInt($scope.selectedDetails.soLuong)
+        console.log(value)
+        // Kiểm tra nếu số lượng đã đạt đến giới hạn
+        if (value < currentValue) {
+            $scope.soluongDetail++;
+        } else if(value = currentValue){
+            // Hiển thị thông báo nếu vượt quá số lượng còn lại
+            alert('Số lượng sản phẩm chỉ còn ' + $scope.selectedDetails.soLuong + ' sản phẩm.');
+        }
+    };
+        
 })

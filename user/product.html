@@ -13,12 +13,10 @@
     <script src="./angular/gobal.js" type="text/javascript"></script>
     <script src="./angular/product.js" type="text/javascript"></script>
     <script src="./angular/product.js" type="text/javascript"></script>
-    <script src="./angular/access.js" type="text/javascript"></script>
-    
+    <script src="./angular/access.js" type="text/javascript"></script>   
     <title>Đồ Án 2</title>
 </head>
-<body ng-app="PageUser" ng-controller="ProductCtrl">
-    
+<body ng-app="PageUser" ng-controller="ProductCtrl"> 
     <div id="wapper">
         <div id="header">
             <div id="header-top"> 
@@ -87,7 +85,7 @@
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                             </div>
-                            <span>0 đánh giá | Mã sản phẩm: <i>{{product.kinhmat_id}}</i></span>
+                            <span ng-controller="AccessCtrl">{{countListAccesses}} đánh giá | Mã sản phẩm: <i>{{product.kinhmat_id}}</i></span>
                         </div>
                     
                         <!-- Giá sản phẩm -->
@@ -133,10 +131,10 @@
                         <!-- Chọn số lượng -->
                         <div id="quantity-section">
                             <span class="bold">Số lượng:</span>
-                            <div class="quantity-controls">
-                                <button id="decrease" class="quantity-btn" onclick="handleDecreaseClick()">-</button>
-                                <span id="quantity-value" class="quantity-display" max-value="{{selectedDetails.soLuong}}" ng-model="soluongDetail">1</span>
-                                <button id="increase" class="quantity-btn" onclick="handleIncreaseClick()">+</button>
+                            <div class="quantity-controls" >
+                                <button id="decrease" class="quantity-btn" ng-click="handleDecreaseClick()">-</button>
+                                <span id="quantity-value" class="quantity-display" ng-model="soluongDetail">{{soluongDetail}}</span>
+                                <button id="increase" class="quantity-btn" ng-click="handleIncreaseClick()" ng-disabled="soluongDetail >= selectedDetails.soLuong">+</button>
                             </div>
                         </div>
                         <div style="color: #555; font-size: 13px;">*Mẫu kính này còn lại {{selectedDetails.soLuong || product.listThuocTinh[0].soLuong}} sản phẩm</div>
@@ -223,7 +221,6 @@
                                     - Vệ sinh và lau chùi mắt kính bằng nước xịt, khăn lau chuyên dụng </br>
                                     - Để gọng kính vào hộp khi không sử dụng
                                 </p>
-                                <img src="./image/dichvu.jpg" alt="">
                                 <p>
                                     * Chính sách bảo hành của Lily:</br>
                                     - Đổi hàng trong vòng 3 ngày kể từ ngày nhận hàng nếu lỗi do NSX (với điều kiện Giá trị sản phẩm đổi ngang bằng hoặc cao hơn giá trị sản phẩm cũ)</br>
@@ -232,16 +229,14 @@
                                     - Vệ sinh miễn phí kính định kỳ.
                                 </p>
                                 <p>* Xuất xứ: Việt Nam</p>
-                                <img src="./image/dichvu.jpg" alt="">
                             </div>
                         </div>
-                        
                         <!-- Assess-->
                         <div id="pdleft-bottom">
                             <h2>ĐÁNH GIÁ SẢN PHẨM</h2>
                             <div id="content-assess" ng-controller="AccessCtrl">
                                 <div class="container-assess" ng-repeat="acc in listAccesses" >
-                                    <img ng-src="'http://localhost:44364/api/BaiViet/get-img/' + acc.image || './image/default_product.jpg'" 
+                                    <img ng-src="{{'http://localhost:44364/api/BaiViet/get-img/' + acc.image || './image/default_product.jpg'}}" 
                                         style="width: 50px; height: 50px; border-radius: 50%;"
                                         alt="">
                                     <div class="access-detail">
@@ -269,42 +264,17 @@
                     </div>
                     <div id="product-detail-right">
                         <h3>SẢN PHẨM NỔI BẬT</h3>
-                        <div id="hot-products">
+                        <div id="hot-products" ng-repeat="item in listProduct">
                             <div class="col-lg-12">
                                 <div id="hot-products-detail">
-                                    <img src="./image/kinhram.jpg" alt="">
-                                    <span>Kính mát nam nữ chống UV400 thiết kế mắt vuông dễ đeo màu sắc thời trang 602335</span>
-                                    <p>299.000đ</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div id="hot-products-detail">
-                                    <img src="./image/kinhram.jpg" alt="">
-                                    <span>Kính mát nam nữ chống UV400 thiết kế mắt vuông dễ đeo màu sắc thời trang 602335</span>
-                                    <p>299.000đ</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div id="hot-products-detail">
-                                    <img src="./image/kinhram.jpg" alt="">
-                                    <span>Kính mát nam nữ chống UV400 thiết kế mắt vuông dễ đeo màu sắc thời trang 602335</span>
-                                    <p>299.000đ</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div id="hot-products-detail">
-                                    <img src="./image/kinhram.jpg" alt="">
-                                    <span>Kính mát nam nữ chống UV400 thiết kế mắt vuông dễ đeo màu sắc thời trang 602335</span>
-                                    <p>299.000đ</p>
+                                    <img ng-src="{{'http://localhost:44364/api/BaiViet/get-img/' + item.image}}" alt="">
+                                    <span>{{item.tenKinhMat}}</span>
+                                    <p>{{item.listThuocTinh[0].giaBan | number:0}}đ</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
                 </div>
-                <div id="content-left"></div>
-                <div id="content-right"></div>
-
             </div>
         </div>
         <div id="footer">
@@ -316,10 +286,10 @@
                         <p><span class="bold">Mon - Sun:</span> 8:00 AM - 9:00 PM </p>
                         <p><span class="bold">Hotline:</span> 0564105678</p>
                     </div>
-
+            
                     <p>Đăng ký để nhận được thông báo mới nhất</p>
-                    <div class="singup-email">
-                        <input type="text" placeholder="Nhập địa chỉ email tại đây..."></input>
+                    <div class="signup-email">
+                        <input type="text" placeholder="Nhập địa chỉ email tại đây...">
                         <button type="submit"><i class="far fa-envelope"></i></button>
                     </div>
                     <div class="social-network">
@@ -327,16 +297,34 @@
                         <i class="fab fa-instagram"></i>
                         <i class="fab fa-tiktok"></i>
                     </div>
-
                 </div>
-                <div id="footer-address">
-
+                <div id="footer-product">
+                    <h3>Sản phẩm</h3>
+                    <ul>
+                        <li><a href="#">Kính cận</a></li>
+                        <li><a href="#">Kính thời trang</a></li>
+                        <li><a href="#">Kính râm</a></li>
+                        <li><a href="#">Phụ kiện</a></li>
+                    </ul>
                 </div>
                 <div id="footer-policy">
-
+                    <h3>Chính sách</h3>
+                    <ul>
+                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Chính sách bảo hành</a></li>
+                        <li><a href="#">Chính sách giao hàng</a></li>
+                        <li><a href="#">Chính sách bảo mật</a></li>
+                    </ul>
+                </div>
+                <div id="footer-network">
+                    <h3>Hệ thống cửa hàng</h3>
+                    <ul>
+                        <li>Khoái Châu, Hưng Yên</li>
+                        <li>Hoàn Kiếm, Hà Nội</li>
+                        <li>Quận 1, TP. Hồ Chí Minh</li>
+                    </ul>
                 </div>
             </div>
-            
         </div>
     </div>
 </body>

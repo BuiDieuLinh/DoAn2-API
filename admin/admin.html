@@ -19,9 +19,10 @@
     <script src="./angular/news.js"></script>
     <script src="./angular/price.js"></script>
     <script src="./angular/report.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>    <title>Đồ Án 2</title>
+
+    <title>Đồ Án 2</title>
 </head>
 <body ng-app="PageAdmin">
     <div id="wapper">
@@ -144,7 +145,6 @@
 
                             <!-- Method-->
                             <div id="method">
-                                <button >Danh Mục</button>
                                 <button class="add-product" ng-click="openEditProductPopup()"><i class="fas fa-plus icon-method"></i>Thêm mới</button>
                             </div>
                         </div>
@@ -596,13 +596,7 @@
                             <div id="sortby">
                                 <button><i class="fas fa-sort-amount-up-alt"></i></button>
                                 <button><i class="fas fa-sort-amount-down"></i></button>
-                                <select name="glasses" id="category-glasses">
-                                    <option value="Gọng kính">Gọng kính</option>
-                                    <option value="Kính râm">Kính râm</option>
-                                    <option value="Tròng kính">Tròng kính</option>
-                                    <option value="Kính thời trang">Kính thời trang</option>
-                                    <option value="Phụ kiện">Phụ kiện</option>
-                                </select>
+                                
                             </div>
 
                             <!-- Tìm kiếm -->
@@ -736,14 +730,14 @@
                     <div id="orders" class="content" ng-controller="HoaDonBanCtrl">
                         <!-- Tab Order Controller -->
                         <div id="orders-container">
-                            <div id="tab-orders">
+                            <!-- <div id="tab-orders">
                                 <div class="tab-order active" onclick="openTabOrder(event, 'all-order')">
                                     Tất cả
                                 </div>
                                 <div class="tab-order " onclick="openTabOrder(event, 'neworder')">
                                     Đơn hàng mới
                                 </div>
-                            </div>
+                            </div> -->
 
                             <!-- Content tab order -->
                             <div id="all-order" class="content-order">
@@ -755,11 +749,6 @@
                                         <input type="text" class="search-input" ng-model="searchOrder" placeholder="Tìm kiếm...">
                                     </div>
                                     <input type="date" id="date-order">
-                                    <select name="status" id="status">
-                                        <option value="completed">Đã xử lý</option>
-                                        <option value="loading">Chưa xử lý</option>
-                                    </select>
-                                    <button>Xuất hóa đơn</button>
                                 </div>
 
                                 <!-- List order -->
@@ -779,11 +768,11 @@
                                     <tbody>
                                         <tr ng-repeat="x in listHD | filter : filterOrder" >
                                             <td>{{x.donhangban_id}}</td>
-                                            <td>{{x.ngayBan }}</td>
+                                            <td>{{x.ngayBan | date: 'dd/MM/yyyy'}}</td>
                                             <td>{{x.tenNguoiDung}}</td>
                                             <td class="status-processing">{{x.trangThaiThanhToan}}</td>
                                             <td class="status-shipped">{{x.trangThaiGiaoHang}}</td>
-                                            <td class="status-shipped">{{x.ngayHoanThanhDH || '---'}}</td>
+                                            <td class="status-shipped">{{x.ngayHoanThanhDH || '---' | date: 'dd/MM/yyyy'}}</td>
                                             <td>{{x.totalBill | number:0}}đ</td>
                                             <td>
                                                 <button class= "btn-bill btn-Detail-bill" 
@@ -885,7 +874,7 @@
                         <!-- Danh sách nhà cung cấp -->
                         <div id="list-suppliers" >
                             <h2>Danh Sách Nhà Cung Cấp</h2>
-                            <div class="search-container">
+                            <div class="search-container-supplier">
                                 <i class="fas fa-search search-icon"></i>
                                 <input type="text" class="search-input" ng-model="searchSuppliers" placeholder="Tìm kiếm...">
                             </div>
@@ -1106,58 +1095,65 @@
                     </div>
 
                     <!-- Content Reports-->
-                    <div id="reports" class="content">
-                        <div id="reports-container">
-                            <div id="reports-basic">
+                    <div id="reports" class="content" >
+                        <div id="reports-container" >
+                            <div id="reports-basic" ng-controller="ReportCtrl">
                                 <div class="content-report" style="--report-color: #4CAF50;">
                                     <i class="fas fa-chart-line"></i>
                                     <div class="report-content">
                                         <span>Doanh Thu</span>
-                                        <p>0</p>
+                                        <p>{{totalDoanhThu | number: 0}}đ</p>
                                     </div>
                                 </div>
                                 <div class="content-report" style="--report-color: #2196F3;">
                                     <i class="fas fa-percentage"></i>
                                     <div class="report-content">
                                         <span>Lãi Xuất</span>
-                                        <p>0</p>
+                                        <p>{{totalLaiXuat | number: 0}}đ</p>
                                     </div>
                                 </div>
                                 <div class="content-report" style="--report-color: #FF9800;">
                                     <i class="fas fa-file-invoice-dollar"></i>
                                     <div class="report-content">
                                         <span>Đơn Hàng Đặt</span>
-                                        <p>0</p>
+                                        <p>{{totalSoDonHangDat}}</p>
                                     </div>
                                 </div>
                                 <div class="content-report" style="--report-color: #F44336;">
                                     <i class="fas fa-sync-alt"></i>
                                     <div class="report-content">
                                         <span>Số Đơn Hủy</span>
-                                        <p>0</p>
+                                        <p>{{totalSoDonHangHuy}}</p>
                                     </div>
                                 </div>
                                 <div class="content-report" style="--report-color: #9C27B0;">
                                     <i class="fas fa-user-plus"></i>
                                     <div class="report-content">
                                         <span>Khách Hàng Mới</span>
-                                        <p>0</p>
+                                        <p>{{totalSoKhachHangMoi}}</p>
                                     </div>
                                 </div>
                                 <div class="content-report" style="--report-color: #00BCD4;">
                                     <i class="fas fa-box-open"></i>
                                     <div class="report-content">
                                         <span>Hàng Tồn Kho</span>
-                                        <p>0</p>
+                                        <p>{{soLuongTonKho}}</p>
                                     </div>
                                 </div>
                             </div>
-                            <div id="reports-chart">
-                                <h2>Thống kê</h2>
-                                <div id="revenueChart">
-                                    <canvas id="myChart"></canvas>
+                            <div id="reports-chart" >
+                                <div style=" display: flex; justify-content: space-between; align-items: center;">
+                                    <h2>Thống kê</h2>
+                                    <input style="width: 150px; height: fit-content;" type="text" id="datePicker" placeholder="Chọn ngày"/>
                                 </div>
-                                <input type="text" id="datePicker" placeholder="Chọn ngày"/>
+                                
+                                <div id="revenueChart" ng-controller="ChartCtrl">
+                                    <canvas id="myChart"></canvas>
+
+                                    <h3>Top 1 Sản phẩm bán chạy</h3>
+                                    <p>{{reportDoanhThu[0] && reportDoanhThu[0].tenKinhMat}} : {{reportDoanhThu[0] && reportDoanhThu[0].soLuongBan}}</p>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>

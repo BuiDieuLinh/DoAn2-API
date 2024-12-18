@@ -26,6 +26,10 @@ function Exit(){
     window.location.href = '../login/login.html'
 }
 
+window.addEventListener('beforeunload', function () {
+    localStorage.removeItem(localStorage.getItem("tempStorage"));
+});
+
 let temporaryStorage = JSON.parse(localStorage.getItem("tempStorage")) || []; // Lấy dữ liệu từ localStorage nếu có
 
 // Cập nhật tổng tiền và số lượng sản phẩm

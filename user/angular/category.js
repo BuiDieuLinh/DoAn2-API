@@ -23,13 +23,18 @@ appuser.controller("CategoryCtrl", function($scope, $http){
     $scope.sortedAndPaginatedProducts = []; // Danh sách hiển thị sau khi phân trang
 
     // Hàm sắp xếp và phân trang
-    $scope.sortAndPaginateProducts = function (criteria) {
+    $scope.sortAndPaginateProducts = function (criteria,categoryId) {
         if (!$scope.listProductFromCate || $scope.listProductFromCate.length === 0) {
             console.warn("Danh sách sản phẩm trống!");
             return;
         }
 
         $scope.sortedProducts = angular.copy($scope.listProductFromCate); // Sao chép dữ liệu gốc
+        if (categoryId && categoryId !== "all") {
+            $scope.sortedProducts = $scope.sortedProducts.filter(
+                product => product.danhmuc_id === categoryId
+            );
+        }
 
         // Sắp xếp theo tiêu chí
         if (criteria === "newest") {
@@ -66,6 +71,11 @@ appuser.controller("CategoryCtrl", function($scope, $http){
         }
     };
 
+    $scope.filterByCategory = function (categoryId) {
+        $scope.currentPage = 1; // Đặt lại trang hiện tại về trang đầu tiên
+        $scope.sortAndPaginateProducts($scope.currentSortCriteria, categoryId);
+    };
+    
     // Hàm tải tất cả sản phẩm
     $scope.loadAllProducts = function () {
         $http.get(currentuser_url + '/api/KinhMat/GetAll')

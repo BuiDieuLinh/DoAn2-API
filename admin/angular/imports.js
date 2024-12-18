@@ -75,7 +75,7 @@ app.controller("ImportsCtrl", function ($scope, $http) {
       let totalPrice = 0;
       if(listChiTietDHN && listChiTietDHN.length > 0){
         angular.forEach(listChiTietDHN, function(product){
-          totalPrice += product.giaNhap;
+          totalPrice += product.giaNhap * product.soLuong;
         })
       }
       return totalPrice;

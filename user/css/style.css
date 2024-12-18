@@ -25,12 +25,6 @@ a{
     margin: 0px auto;
 }
 
-@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
-
-}
-
-/* ---------------------- Các CSS đã có ---------------------- */
-
 /* Menu Content Slide-In */
 #menu-content {
     position: fixed;
@@ -162,8 +156,6 @@ a{
 
 }
 
-/* Các CSS hiện có khác giữ nguyên */
-
 /* Optional: Smooth transition for overlay */
 #overlay {
     opacity: 0;
@@ -173,7 +165,6 @@ a{
 #overlay.active {
     opacity: 1;
 }
-
 
 #menu-nav{
     display: none;
@@ -330,7 +321,6 @@ a{
         transform: translateY(0);
     }
 }
-
 
 /* Định dạng cho phần giỏ hàng */
 #cart {
@@ -781,7 +771,7 @@ a{
     margin-bottom: 20px;
     transition: transform 0.3s, box-shadow 0.3s;
     display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(400px,1fr));
+    grid-template-columns: repeat(auto-fit,minmax(100px,1fr));
     column-gap: 20px;
     row-gap: 20px;
     width: 90%;
@@ -825,7 +815,7 @@ a{
     right: 0;
     z-index: 5;
     color: var(--main-color);
-    font-size: 36px;
+    font-size: 28px;
     font-weight: bold;
     padding: 10px;
     text-align: center;
@@ -848,15 +838,11 @@ a{
     overflow: hidden;  /* Ẩn văn bản vượt quá */
 }
 #line {
-    opacity: 0;
     display: inline-block;
-    border-right: 2px solid black;
     overflow: hidden;    /* Ẩn thanh cuộn */
     width: 100%;         /* Đảm bảo phần tử chiếm hết chiều rộng */
     max-width: 100%;     /* Giới hạn chiều rộng tối đa */
     height: auto;        /* Đảm bảo chiều cao tự động thay đổi */
-    
-    overflow: hidden;    /* Ẩn phần văn bản vượt quá */
     text-overflow: ellipsis; /* Thêm dấu ba chấm (...) khi văn bản vượt quá */
   }
 
@@ -972,65 +958,94 @@ a{
     }
 }
 
-#footer{
-    width: 100%;
-    height: 300px;
-    background-color: black;
+/* Footer Info */
+#footer-container {
     display: flex;
-    justify-content: space-between;
-    color: #fff;
-}
-
-#footer-container{
-    width: 90%;
-    margin: 0 auto;
-}
-
-.activity{
+    justify-content: space-around;
+    padding: 20px;
+    background-color: #333;
     color: #fff;
     font-size: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-.bold{
-    font-weight: bold;
 }
 #footer-info{
-    margin-top: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px
+    width: 30%;
 }
-.singup-email {
-    display: flex;
-    align-items: center;
-    width: 400px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    overflow: hidden;
+#footer-info .name {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    display: block;
 }
 
-.singup-email input {
-    border: none;
-    padding: 10px;
+#footer-info .activity p {
+    margin: 5px 0;
+}
+
+.signup-email {
+    margin-top: 10px;
+    display: flex;
+}
+
+.signup-email input {
     flex: 1;
-    outline: none;
-    background: #f5f2f2;
+    padding: 8px;
+    border: none;
+    border-radius: 5px 0 0 5px;
 }
 
-.singup-email button {
-    background: var(--main-background);
+.signup-email button {
+    padding: 8px;
     border: none;
-    color: white;
-    padding: 10px 15px;
+    background-color: #A9141E;
+    color: #fff;
     cursor: pointer;
+    border-radius: 0 5px 5px 0;
 }
-.social-network{
-    font-size: 36px;
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
+
+.signup-email button i {
+    font-size: 1.2em;
+}
+
+.social-network i {
+    font-size: 1.5em;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: color 0.3s;
+    padding-top: 10px;
+}
+
+.social-network i:hover {
+    color: #A9141E;
+}
+
+/* Footer Product, Policy, and Network */
+#footer-product, #footer-policy, #footer-network {
+    text-align: left;
+}
+
+#footer-product h3, #footer-policy h3, #footer-network h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+#footer-product ul, #footer-policy ul, #footer-network ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#footer-product li, #footer-policy li, #footer-network li {
+    margin: 5px 0;
+}
+
+#footer-product a, #footer-policy a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+#footer-product a:hover, #footer-policy a:hover {
+    color: #A9141E;
 }
 @media only screen and (max-width: 768px){
 

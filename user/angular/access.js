@@ -16,6 +16,7 @@ appuser.controller("AccessCtrl",function($scope, $http){
             url: `${currentuser_url}/api/DanhGia/GetByProductId/${productId}`
         }).then(function (response) {
             $scope.listAccesses = response.data;
+            $scope.countListAccesses = $scope.listAccesses.length;
             console.log($scope.listAccesses)
             // Tạo danh sách các promise để lấy thông tin người dùng
             const userPromises = $scope.listAccesses.map(access => {
@@ -26,15 +27,13 @@ appuser.controller("AccessCtrl",function($scope, $http){
                     const user = userResponse.data;
                     access.tenTaiKhoan = user.tenTaiKhoan || "Không xác định";
                     access.image = user.image || [];
+                    console.log(access.image)
                 }).catch(function (err) {
                     console.error(`Lỗi khi lấy dữ liệu người dùng với ID: ${access.nguoidung_id}`, err);
                     access.tenTaiKhoan = "Không xác định";
                     access.image = [];
                 });
             });
-    
-            
-            
         }).catch(function (err) {
             console.error("Lỗi khi đọc danh sách đánh giá:", err);
         });
@@ -42,4 +41,5 @@ appuser.controller("AccessCtrl",function($scope, $http){
     
     // Gọi hàm LoadAccess
     $scope.LoadAccess();
-    });
+
+});

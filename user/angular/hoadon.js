@@ -128,6 +128,7 @@ appuser.controller("OrderCtrl", function($scope,$http) {
         if (confirm("Xác nhận đơn hàng?")) {
             $scope.selectedOrder.trangThaiGiaoHang = "Hoàn thành";
             $scope.selectedOrder.trangThaiDonHang = "Hoàn thành";
+            $scope.selectedOrder.trangThaiThanhToan = "Đã thanh toán"
             var dateHT = new Date()
             $scope.selectedOrder.ngayHoanThanhDH = dateHT.toISOString()
             $scope.selectedOrder.nguoidung_id = nguoidung_id;
@@ -170,6 +171,44 @@ appuser.controller("OrderCtrl", function($scope,$http) {
                 console.error("Lỗi khi hủy đơn hàng: ", error);
             });
         }
+    };
+    
+    // Hàm để toggle hiển thị phần đánh giá
+    $scope.toggleReviewVisibility = function(order) {
+        // Đảo ngược trạng thái hiển thị đánh giá
+        order.isReviewVisible = !order.isReviewVisible;
+    };
+
+    // Hàm để thiết lập số sao khi người dùng click vào sao
+    $scope.setRating = function(order, rating) {
+        order.rating = rating; // Cập nhật số sao được chọn
+    };
+    
+    // Hàm để xử lý khi gửi đánh giá
+    $scope.submitReview = function(order) {
+        var kinhmatId = order.listChiTietDHB && order.listChiTietDHB[0] ? order.listChiTietDHB[0].infoProductByOption.kinhmat_id : null;
+        var date = new Date();
+        var data = {
+            danhgia_id: `DG${Math.floor(Math.random()*100000)}`,
+            kinhmat_id: kinhmatId,
+            mucDanhGia: order.rating,
+            binhLuan: order.review,
+            nguoidung_id: localStorage.getItem("user_id"),
+            ngayDanhGia: date.toISOString()
+        }
+        $http({
+            method: 'POST',
+            url: currentuser_url + '/api/DanhGia/create',
+            data: JSON.stringify(data),
+            headers: {
+                "Content-type": "application/json"
+            }
+        }).then(function(response){
+            // Xử lý gửi đánh giá (có thể gửi lên server)
+            alert('Đánh giá của bạn: ' + order.review + ' với ' + order.rating + ' sao.');
+            // Sau khi gửi, có thể ẩn mục đánh giá lại
+            order.isReviewVisible = false;
+        })
     };
     
 })    

@@ -969,6 +969,10 @@ body.active-popup {
     grid-template-areas: 
     "info-suppliers list-suppliers";
 }
+.search-container-supplier{
+    position: relative;
+    width: 100%;
+}
 
 #input-info-supplier{
     grid-area: info-suppliers;
@@ -984,7 +988,10 @@ body.active-popup {
     text-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
     color: #A9141E;
 }
+.search-input-supplier{
+    width: 100%;
 
+}
 .container-attribute label{
     color: #555;
     font-size: 14px;
@@ -1085,20 +1092,16 @@ body.active-popup {
 #all-order{
     padding: 10px;
     box-sizing: border-box;
+    height: 90vh;
     overflow-y: scroll;
-    height: 500px;
 }
 
 #search-control{
     width: fit-content;
-    padding: 10px 0px;
     display: flex;
     gap: 10px;
-    align-items: center;       
-    position: sticky
+    align-items: center;  
 }
-
-
 #filter{
     border: none;
     border-radius: 5px;
@@ -1110,7 +1113,7 @@ body.active-popup {
 
 .search-container {
     position: relative;
-    width: 600px;
+    width: 900px;
     /* Adjust width as needed */
 }
 .search-icon {
@@ -1135,20 +1138,20 @@ body.active-popup {
 
 
 /* Date input styling */
-#date-order, #status {
+#date-order {
     outline: none;
     padding: 6px;
     font-size: 14px;
     border: 1px solid #ddd;
     border-radius: 5px;
+    width: fit-content;
 }
 
 
 #list-order {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-    
+    margin-top: 10px;
 }
 #list-order th, td {
     padding: 12px;
@@ -1156,6 +1159,7 @@ body.active-popup {
     border-bottom: 1px solid #ddd;
     font-size: 14px;
 }
+
 #list-order th {
     background-color: #f8f8f8;
     color: #333;
@@ -1874,5 +1878,5 @@ table thead th:first-child input {
 }
 #myChart {
     width: 100% !important;  /* Chiếm toàn bộ chiều rộng */
-    height: 300px !important; /* Đảm bảo chiều cao biểu đồ */
+    height: 350px !important; /* Đảm bảo chiều cao biểu đồ */
 }

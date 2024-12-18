@@ -837,6 +837,88 @@ a{
         padding: 20px;
     }
 }
+
+/* Container của phần đánh giá */
+.order-review {
+    background-color: #f9f9f9; /* Màu nền sáng */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Tiêu đề đánh giá */
+.order-review h5 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Phần sao đánh giá */
+.star-rating {
+    font-size: 30px;
+    color: #ccc;
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+
+/* Sao đã được chọn (màu vàng) */
+.star-rating .filled {
+    color: #FFD700;
+}
+
+/* Textarea nhập đánh giá */
+.order-review textarea {
+    width: 100%;
+    height: 120px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: none;
+    font-size: 14px;
+    color: #333;
+    transition: border-color 0.3s;
+}
+
+/* Khi focus vào textarea */
+.order-review textarea:focus {
+    border-color: #A9141E; /* Màu xanh khi focus */
+    outline: none;
+}
+
+/* Nút gửi đánh giá */
+.order-review button {
+    background-color: #A9141E; /* Màu xanh */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    text-align: center;
+}
+
+/* Nút gửi đánh giá khi hover */
+.order-review button:hover {
+    background-color: #A9141E; /* Màu xanh đậm khi hover */
+}
+
+/* Hiển thị nút gửi ở giữa */
+.order-review button {
+    display: inline-block;
+    width: auto;
+    text-align: center;
+}
+
+
+
 #footer-container {
     display: flex;
     justify-content: space-around;

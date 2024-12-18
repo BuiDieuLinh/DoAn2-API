@@ -58,33 +58,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-    const textElement = document.getElementById('line');
-    const text = textElement.textContent; // Lấy nội dung văn bản gốc
-    textElement.textContent = ''; // Xóa văn bản ban đầu
-  
-    let index = 0;
-    const typingSpeed = 50; // Giảm tốc độ xuống 50ms để gõ nhanh hơn
-  
-    function type() {
-      if (index < text.length) {
-        textElement.textContent += text.charAt(index);
-        index++;
-        setTimeout(type, typingSpeed); // Gọi lại hàm để tạo hiệu ứng từng chữ
-      } else {
-        // Sau khi hoàn tất, lặp lại quá trình nếu muốn
-        setTimeout(() => {
-          textElement.textContent = ''; // Xóa văn bản để lặp lại
-          index = 0; // Đặt lại chỉ số
-          type(); // Gọi lại để tiếp tục hiệu ứng
-        }, 2000); // Dừng lại một chút trước khi lặp lại
-      }
-    }
-  
-    textElement.style.opacity = 1; // Đảm bảo chữ hiển thị
-    type(); // Bắt đầu hiệu ứng gõ chữ
-  });
-  
 function Exit(){
     localStorage.removeItem("user_id");
     localStorage.removeItem("hoten");

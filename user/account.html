@@ -16,6 +16,7 @@
     <script src="./js/account.js" type="text/javascript"></script>
     <script src="./js/main.js" type="text/javascript"></script>
     <script src="./angular/hoadon.js" type="text/javascript"> </script>
+    <script src="./angular/access.js" type="text/javascript"> </script>
 
     <title>Đồ Án 2</title>
 </head>
@@ -202,15 +203,16 @@
                                 <div ng-repeat="order in groupedOrders[selectedTab]" 
                                     ng-show="groupedOrders[selectedTab].length > 0" 
                                     class="order-group"
-                                    ng-click="openMyOrderDetail(order)">
+                                    >
                                     <div class="order-header">
                                         <span style="font-weight: normal; color: rgb(14, 93, 129)">Mã đơn hàng: {{order.donhangban_id}}</span>
                                         <p>
                                             <span>{{order.trangThaiDonHang}}</span>
-                                            <a href="" ng-if="order.trangThaiDonHang === 'Hoàn thành'" >ĐÁNH GIÁ</a>
+                                            <a ng-if="order.trangThaiDonHang === 'Hoàn thành'" 
+                                                ng-click="toggleReviewVisibility(order)">ĐÁNH GIÁ</a>
                                         </p>
                                     </div>
-                                    <div class="order-item" ng-repeat="detail in order.listChiTietDHB">
+                                    <div class="order-item" ng-repeat="detail in order.listChiTietDHB" ng-click="openMyOrderDetail(order)">
                                         <img 
                                             ng-src="{{'http://localhost:44364/api/BaiViet/get-img/' + detail.infoProductByOption.imageCon || './image/default_product.jpg'}}" 
                                             alt="" 
@@ -242,7 +244,26 @@
                                         </div>
                                         
                                     </div>
+                                    <div ng-show="order.isReviewVisible" class="order-review" ng-if="order.trangThaiDonHang === 'Hoàn thành'">
+                                        <h5>Đánh giá sản phẩm</h5>
+                                        
+                                        <!-- Đánh giá sao -->
+                                        <div class="star-rating">
+                                            <span ng-repeat="star in [1, 2, 3, 4, 5]" 
+                                                  ng-class="{'filled': star <= order.rating}" 
+                                                  ng-click="setRating(order, star)">
+                                                ★
+                                            </span>
+                                        </div>
+                                        
+                                        <!-- Phần nhập đánh giá -->
+                                        <textarea ng-model="order.review" placeholder="Viết đánh giá của bạn"></textarea>
+                                        
+                                        <!-- Nút gửi đánh giá -->
+                                        <button ng-click="submitReview(order)">Gửi đánh giá</button>
+                                    </div>
                                 </div>
+                                
                             </div>
                         </div>
 
